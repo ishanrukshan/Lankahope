@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+Sinhala:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@layer utilities {
+    /* Hero Background Fade In with Zoom */
+    @keyframes hero-bg-reveal {
+        0% {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Slide Down from Top */
+    @keyframes slide-down {
+        0% {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Fade In Up */
+    @keyframes fade-in-up {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Simple Fade In */
+    @keyframes fade-in {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    /* Animation Classes */
+    .animate-hero-bg {
+        animation: hero-bg-reveal 1.5s ease-out forwards;
+    }
+
+    .animate-slide-down {
+        animation: slide-down 0.8s ease-out forwards;
+    }
+
+    .animate-fade-in-up {
+        opacity: 0;
+        animation: fade-in-up 0.8s ease-out forwards;
+    }
+
+    .animate-fade-in {
+        opacity: 0;
+        animation: fade-in 0.8s ease-out forwards;
+    }
+
+    /* Animation Delays */
+    .delay-0 {
+        animation-delay: 0ms;
+    }
+
+    .delay-300 {
+        animation-delay: 300ms;
+    }
+
+    .delay-500 {
+        animation-delay: 500ms;
+    }
+
+    .delay-700 {
+        animation-delay: 700ms;
+    }
+
+    .delay-900 {
+        animation-delay: 900ms;
+    }
+
+    .delay-1100 {
+        animation-delay: 1100ms;
+    }
+
+    .delay-1300 {
+        animation-delay: 1300ms;
+    }
+
+    .delay-1500 {
+        animation-delay: 1500ms;
+    }
+
+    .duration-10000 {
+        transition-duration: 10000ms;
+    }
+}

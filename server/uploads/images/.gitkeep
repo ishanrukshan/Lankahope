@@ -1,0 +1,4 @@
+# Image Uploads Directory
+This folder stores uploaded images from the admin panel.
+
+Do not delete this folder - it is required for the image upload functionality to work.
