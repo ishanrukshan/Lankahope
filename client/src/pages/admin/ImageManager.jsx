@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { 
-    FaArrowLeft, FaUpload, FaTrash, FaEdit, FaSpinner, FaCheck, FaTimes, 
-    FaImage, FaSearch, FaFilter, FaEye, FaDownload, FaExchangeAlt 
+import {
+    FaArrowLeft, FaUpload, FaTrash, FaEdit, FaSpinner, FaCheck, FaTimes,
+    FaImage, FaSearch, FaFilter, FaEye, FaDownload, FaExchangeAlt
 } from 'react-icons/fa';
 
 const ImageManager = () => {
@@ -29,10 +29,7 @@ const ImageManager = () => {
         category: 'other'
     });
 
-    const token = localStorage.getItem('adminToken');
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
+
 
     const categories = ['hero', 'team', 'gallery', 'logo', 'background', 'content', 'other'];
     const pageOptions = [
@@ -45,6 +42,49 @@ const ImageManager = () => {
         { id: 'contact', name: 'Contact' }
     ];
 
+    const pageSections = {
+        'home': [
+            { id: 'hero', name: 'Hero Section' },
+            { id: 'commitment', name: 'Commitment Section' },
+            { id: 'chairman', name: "Chairman's Message" },
+            { id: 'pillars', name: 'Pillars Section' },
+            { id: 'vision', name: 'Vision Pillar' },
+            { id: 'mission', name: 'Mission Pillar' },
+            { id: 'values', name: 'Values Pillar' },
+            { id: 'goals', name: 'Goals Pillar' }
+        ],
+        'about-background': [
+            { id: 'intro', name: 'Introduction' },
+            { id: 'vision', name: 'Vision' },
+            { id: 'mission', name: 'Mission' },
+            { id: 'values', name: 'Core Values' },
+            { id: 'mandate', name: 'Mandate' },
+            { id: 'legacy', name: 'Legacy' }
+        ],
+        'about-administration': [
+            { id: 'intro', name: 'Introduction' },
+            { id: 'hierarchy', name: 'Organizational Hierarchy' },
+            { id: 'governance', name: 'Governance' }
+        ],
+        'about-research': [
+            { id: 'intro', name: 'Introduction' },
+            { id: 'collaboration', name: 'Collaboration' }
+        ],
+        'about-team': [
+            { id: 'intro', name: 'Introduction' },
+            { id: 'team', name: 'Team Members' },
+            { id: 'join', name: 'Join Us' }
+        ],
+        'about-board': [
+            { id: 'intro', name: 'Introduction' },
+            { id: 'board', name: 'Board Members' }
+        ],
+        'contact': [
+            { id: 'intro', name: 'Introduction' },
+            { id: 'info', name: 'Contact Info' }
+        ]
+    };
+
     useEffect(() => {
         fetchImages();
     }, [filter]);
@@ -52,13 +92,15 @@ const ImageManager = () => {
     const fetchImages = async () => {
         try {
             setLoading(true);
-            let url = 'http://localhost:5000/api/images';
+            let url = '/api/images';
             const params = new URLSearchParams();
             if (filter.page) params.append('pageId', filter.page);
             if (filter.category) params.append('category', filter.category);
             if (params.toString()) url += `?${params.toString()}`;
-            
-            const { data } = await axios.get(url, config);
+
+            const { data } = await axios.get(url, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
+            });
             setImages(data);
         } catch (error) {
             console.error('Error fetching images:', error);
@@ -97,9 +139,9 @@ const ImageManager = () => {
             formData.append('description', uploadForm.description);
             formData.append('category', uploadForm.category);
 
-            await axios.post('http://localhost:5000/api/images', formData, {
+            await axios.post('/api/images', formData, {
                 headers: {
-                    ...config.headers,
+                    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
                     'Content-Type': 'multipart/form-data'
                 }
             });
@@ -126,9 +168,9 @@ const ImageManager = () => {
             if (uploadForm.altText) formData.append('altText', uploadForm.altText);
             if (uploadForm.description) formData.append('description', uploadForm.description);
 
-            await axios.put(`http://localhost:5000/api/images/${selectedImage._id}`, formData, {
+            await axios.put(`/api/images/${selectedImage._id}`, formData, {
                 headers: {
-                    ...config.headers,
+                    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
                     'Content-Type': 'multipart/form-data'
                 }
             });
@@ -148,7 +190,9 @@ const ImageManager = () => {
         if (!window.confirm('Are you sure you want to delete this image?')) return;
 
         try {
-            await axios.delete(`http://localhost:5000/api/images/${imageId}`, config);
+            await axios.delete(`/api/images/${imageId}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
+            });
             setMessage({ type: 'success', text: 'Image deleted successfully!' });
             fetchImages();
         } catch (error) {
@@ -168,7 +212,7 @@ const ImageManager = () => {
         });
     };
 
-    const filteredImages = images.filter(img => 
+    const filteredImages = images.filter(img =>
         img.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         img.originalName.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -205,9 +249,8 @@ const ImageManager = () => {
             {/* Message */}
             {message.text && (
                 <div className="max-w-7xl mx-auto px-4 mt-4">
-                    <div className={`p-4 rounded-lg flex items-center justify-between ${
-                        message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                    }`}>
+                    <div className={`p-4 rounded-lg flex items-center justify-between ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        }`}>
                         <div className="flex items-center space-x-2">
                             {message.type === 'success' ? <FaCheck /> : <FaTimes />}
                             <span>{message.text}</span>
@@ -258,24 +301,101 @@ const ImageManager = () => {
                     </div>
                 </div>
 
-                {/* Image Grid */}
+                {/* Image Display */}
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
                         <FaSpinner className="animate-spin text-4xl text-sl-maroon" />
                     </div>
+                ) : filter.page && pageSections[filter.page] ? (
+                    /* Section-based view when page is selected */
+                    <div className="space-y-6">
+                        {pageSections[filter.page].map(section => {
+                            const sectionImages = filteredImages.filter(img => img.sectionId === section.id);
+                            return (
+                                <div key={section.id} className="bg-white rounded-lg shadow-sm p-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-lg font-bold text-gray-800">{section.name}</h3>
+                                        <button
+                                            onClick={() => {
+                                                setUploadForm(prev => ({ ...prev, pageId: filter.page, sectionId: section.id }));
+                                                setShowUploadModal(true);
+                                            }}
+                                            className="text-sm flex items-center space-x-1 text-sl-maroon hover:text-sl-maroon/80"
+                                        >
+                                            <FaUpload className="text-xs" />
+                                            <span>Upload to Section</span>
+                                        </button>
+                                    </div>
+                                    {sectionImages.length > 0 ? (
+                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                            {sectionImages.map(image => (
+                                                <div key={image._id} className="bg-gray-50 rounded-lg overflow-hidden group">
+                                                    <div className="relative aspect-square bg-gray-100">
+                                                        <img
+                                                            src={image.url}
+                                                            alt={image.altText || image.name}
+                                                            className="w-full h-full object-cover"
+                                                            onError={(e) => {
+                                                                e.target.onerror = null;
+                                                                e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23f3f4f6" width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" fill="%239ca3af">No Image</text></svg>';
+                                                            }}
+                                                        />
+                                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
+                                                            <button
+                                                                onClick={() => { setSelectedImage(image); setShowPreviewModal(true); }}
+                                                                className="p-2 bg-white rounded-full text-gray-700 hover:bg-gray-100"
+                                                                title="Preview"
+                                                            >
+                                                                <FaEye />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => { setSelectedImage(image); setShowEditModal(true); }}
+                                                                className="p-2 bg-white rounded-full text-blue-600 hover:bg-gray-100"
+                                                                title="Replace"
+                                                            >
+                                                                <FaExchangeAlt />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleDelete(image._id)}
+                                                                className="p-2 bg-white rounded-full text-red-600 hover:bg-gray-100"
+                                                                title="Delete"
+                                                            >
+                                                                <FaTrash />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className="p-2">
+                                                        <p className="font-medium text-gray-800 truncate text-xs">{image.name}</p>
+                                                        <p className="text-xs text-gray-500">{formatFileSize(image.size)}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center py-8 bg-gray-50 rounded-lg">
+                                            <FaImage className="text-3xl text-gray-300 mx-auto mb-2" />
+                                            <p className="text-gray-400 text-sm">No images for this section</p>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
                 ) : filteredImages.length === 0 ? (
+                    /* Empty state */
                     <div className="bg-white rounded-lg shadow-sm p-12 text-center">
                         <FaImage className="text-6xl text-gray-300 mx-auto mb-4" />
                         <h2 className="text-xl font-bold text-gray-700 mb-2">No Images Found</h2>
-                        <p className="text-gray-500">Upload your first image to get started.</p>
+                        <p className="text-gray-500">Select a page to see images organized by sections, or upload your first image.</p>
                     </div>
                 ) : (
+                    /* Grid view when no page selected */
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         {filteredImages.map(image => (
                             <div key={image._id} className="bg-white rounded-lg shadow-sm overflow-hidden group">
                                 <div className="relative aspect-square bg-gray-100">
                                     <img
-                                        src={`http://localhost:5000${image.url}`}
+                                        src={image.url}
                                         alt={image.altText || image.name}
                                         className="w-full h-full object-cover"
                                         onError={(e) => {
@@ -283,7 +403,6 @@ const ImageManager = () => {
                                             e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23f3f4f6" width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" fill="%239ca3af">No Image</text></svg>';
                                         }}
                                     />
-                                    {/* Overlay */}
                                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
                                         <button
                                             onClick={() => { setSelectedImage(image); setShowPreviewModal(true); }}
@@ -376,11 +495,12 @@ const ImageManager = () => {
 
                                 {/* Page */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Page (Optional)</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Page</label>
                                     <select
                                         value={uploadForm.pageId}
-                                        onChange={(e) => setUploadForm(prev => ({ ...prev, pageId: e.target.value }))}
+                                        onChange={(e) => setUploadForm(prev => ({ ...prev, pageId: e.target.value, sectionId: '' }))}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sl-maroon"
+                                        required
                                     >
                                         <option value="">Select Page</option>
                                         {pageOptions.map(page => (
@@ -388,6 +508,24 @@ const ImageManager = () => {
                                         ))}
                                     </select>
                                 </div>
+
+                                {/* Section */}
+                                {uploadForm.pageId && pageSections[uploadForm.pageId] && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Section *</label>
+                                        <select
+                                            value={uploadForm.sectionId}
+                                            onChange={(e) => setUploadForm(prev => ({ ...prev, sectionId: e.target.value }))}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sl-maroon"
+                                            required
+                                        >
+                                            <option value="">Select Section</option>
+                                            {pageSections[uploadForm.pageId].map(section => (
+                                                <option key={section.id} value={section.id}>{section.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
 
                                 {/* Category */}
                                 <div>
@@ -486,7 +624,7 @@ const ImageManager = () => {
                 <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4" onClick={() => setShowPreviewModal(false)}>
                     <div className="max-w-4xl w-full">
                         <img
-                            src={`http://localhost:5000${selectedImage.url}`}
+                            src={selectedImage.url}
                             alt={selectedImage.altText || selectedImage.name}
                             className="max-h-[80vh] mx-auto object-contain"
                         />

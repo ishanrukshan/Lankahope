@@ -7,6 +7,7 @@ import { FaArrowRight, FaMapMarkerAlt, FaSchool } from 'react-icons/fa';
 
 const Home = () => {
     const [content, setContent] = useState({});
+    const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -16,16 +17,33 @@ const Home = () => {
                 setContent(data);
             } catch (error) {
                 console.error('Error fetching content:', error);
+            }
+        };
+
+        const fetchImages = async () => {
+            try {
+                const { data } = await axios.get('http://localhost:5000/api/images/page/home');
+                setImages(data);
+            } catch (error) {
+                console.error('Error fetching images:', error);
             } finally {
                 setLoading(false);
             }
         };
+
         fetchContent();
+        fetchImages();
     }, []);
 
     // Helper to get content with fallback
     const get = (section, key, fallback) => {
         return content[section]?.[key] || fallback;
+    };
+
+    // Helper to get images by section
+    const getImage = (sectionId) => {
+        const image = images.find(img => img.sectionId === sectionId);
+        return image ? `http://localhost:5000${image.url}` : null;
     };
 
     return (
@@ -35,7 +53,7 @@ const Home = () => {
                 {/* Background Image with Animation */}
                 <div
                     className="absolute inset-0 bg-cover bg-center animate-hero-bg"
-                    style={{ backgroundImage: `url(${bmichImage})` }}
+                    style={{ backgroundImage: `url(${getImage('hero') || bmichImage})` }}
                 >
                     {/* Dark Overlay for text readability */}
                     <div className="absolute inset-0 bg-black/40"></div>
@@ -88,7 +106,7 @@ const Home = () => {
                             <div className="absolute top-4 -left-4 w-full h-full border-2 border-sl-gold/30 z-0"></div>
                             <div className="relative z-10 aspect-[4/3] overflow-hidden rounded-sm shadow-2xl">
                                 <img
-                                    src={chairmanImage}
+                                    src={getImage('chairman') || chairmanImage}
                                     alt="Chairman"
                                     className="w-full h-full object-cover object-top hover:scale-105 transition-all duration-700"
                                 />

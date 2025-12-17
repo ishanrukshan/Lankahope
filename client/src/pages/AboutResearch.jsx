@@ -1,12 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageTitle from '../components/PageTitle';
-import { FaFlask, FaHospital, FaUniversity, FaMicroscope, FaGlobe, FaLeaf } from 'react-icons/fa';
+import { FaFlask, FaHospital, FaUniversity, FaMicroscope, FaGlobe, FaLeaf, FaSpinner } from 'react-icons/fa';
 import AOS from 'aos';
+import axios from 'axios';
 
 const AboutResearch = () => {
+    const [content, setContent] = useState({});
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         AOS.refresh();
+        fetchContent();
     }, []);
+
+    const fetchContent = async () => {
+        try {
+            const { data } = await axios.get('http://localhost:5000/api/content/about-research');
+            setContent(data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching content:', error);
+            setLoading(false);
+        }
+    };
 
     const institutions = [
         {
@@ -59,10 +75,18 @@ const AboutResearch = () => {
         }
     ];
 
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <FaSpinner className="animate-spin text-4xl text-sl-maroon" />
+            </div>
+        );
+    }
+
     return (
         <div className="bg-white min-h-screen">
-            <PageTitle 
-                title="Research Institutions" 
+            <PageTitle
+                title="Research Institutions"
                 subtitle="Our network of research excellence across Sri Lanka"
                 breadcrumb={[
                     { label: 'About Us', path: null },
@@ -74,12 +98,10 @@ const AboutResearch = () => {
             <section className="py-16 px-4 md:px-12 bg-[#FAFAFA]">
                 <div className="max-w-4xl mx-auto text-center">
                     <h2 data-aos="fade-up" className="text-3xl md:text-4xl font-serif text-sl-maroon mb-6">
-                        A Network of Excellence
+                        {content.intro?.title || 'A Network of Excellence'}
                     </h2>
                     <p data-aos="fade-up" data-aos-delay="100" className="text-gray-600 leading-relaxed text-lg">
-                        LankaHope coordinates with a network of premier research institutions across Sri Lanka. 
-                        These institutions form the backbone of our national health research infrastructure, 
-                        each contributing specialized expertise to address the country's health challenges.
+                        {content.intro?.description || 'LankaHope coordinates with a network of premier research institutions across Sri Lanka. These institutions form the backbone of our national health research infrastructure, each contributing specialized expertise to address the country\'s health challenges.'}
                     </p>
                 </div>
             </section>
@@ -96,7 +118,7 @@ const AboutResearch = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {institutions.map((inst, index) => (
-                            <div 
+                            <div
                                 key={index}
                                 data-aos="fade-up"
                                 data-aos-delay={index * 100}
@@ -131,14 +153,13 @@ const AboutResearch = () => {
             <section className="py-20 px-4 md:px-12 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
                 <div className="max-w-4xl mx-auto text-center">
                     <h2 data-aos="fade-up" className="text-3xl md:text-4xl font-serif mb-6">
-                        Collaborate With Us
+                        {content.collaboration?.title || 'Collaborate With Us'}
                     </h2>
                     <p data-aos="fade-up" data-aos-delay="100" className="text-gray-300 leading-relaxed mb-8">
-                        We welcome partnerships with academic institutions, healthcare organizations, and international bodies. 
-                        Together, we can advance health research and improve health outcomes for Sri Lanka.
+                        {content.collaboration?.description || 'We welcome partnerships with academic institutions, healthcare organizations, and international bodies. Together, we can advance health research and improve health outcomes for Sri Lanka.'}
                     </p>
-                    <button 
-                        data-aos="fade-up" 
+                    <button
+                        data-aos="fade-up"
                         data-aos-delay="200"
                         className="px-8 py-3 bg-sl-gold text-white hover:bg-yellow-600 transition-all duration-300 uppercase text-sm tracking-widest font-bold rounded"
                     >

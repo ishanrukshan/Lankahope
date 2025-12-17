@@ -16,6 +16,7 @@ const AdminLogin = () => {
 
             // Save token and user info
             localStorage.setItem('userInfo', JSON.stringify(data));
+            localStorage.setItem('adminToken', data.token);
 
             navigate('/admin/dashboard');
         } catch (err) {
