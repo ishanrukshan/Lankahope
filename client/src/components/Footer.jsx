@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import API from '../config/api';
 import { FaFacebook, FaTwitter, FaLinkedin, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 
 const Footer = () => {
@@ -9,7 +10,7 @@ const Footer = () => {
         const fetchAnnouncements = async () => {
             try {
                 // In production, un-comment this to fetch from API
-                const { data } = await axios.get('http://localhost:5000/api/announcements');
+                const { data } = await axios.get(API.url('/api/announcements'));
                 setAnnouncements(data);
             } catch (error) {
                 console.error("Failed to load announcements");

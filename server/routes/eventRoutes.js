@@ -22,12 +22,13 @@ router.get('/', async (req, res) => {
 // @access  Private/Admin
 router.post('/', protect, admin, upload.single('flyerImage'), async (req, res) => {
     try {
-        const { title, description, eventDate, type } = req.body;
+        const { title, description, content, eventDate, type } = req.body;
         const flyerImagePath = req.file ? `/uploads/${req.file.filename}` : '';
 
         const event = new Event({
             title,
             description,
+            content,
             eventDate,
             type,
             flyerImagePath,
@@ -50,6 +51,7 @@ router.put('/:id', protect, admin, upload.single('flyerImage'), async (req, res)
         if (event) {
             event.title = req.body.title || event.title;
             event.description = req.body.description || event.description;
+            event.content = req.body.content || event.content;
             event.eventDate = req.body.eventDate || event.eventDate;
             event.type = req.body.type || event.type;
             if (req.file) {

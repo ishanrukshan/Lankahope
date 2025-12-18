@@ -9,6 +9,7 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import teamRoutes from './routes/teamRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
+import galleryRoutes from './routes/galleryRoutes.js';
 import announcementRoutes from './routes/announcementRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import contentRoutes from './routes/contentRoutes.js';
@@ -58,9 +59,10 @@ app.use('/api/team', teamRoutes); // Public GET is /api/team, Admin is /api/admi
 app.use('/api/admin', authRoutes);
 app.use('/api/team', teamRoutes);
 app.use('/api/events', eventRoutes);
+app.use('/api/gallery', galleryRoutes);
 app.use('/api/announcements', announcementRoutes);
-app.use('/api/contact', contactRoutes);
 app.use('/api/content', contentRoutes);
+app.use('/api/contact', contactRoutes);
 app.use('/api/images', imageRoutes);
 app.use('/api/settings', settingsRoutes);
 

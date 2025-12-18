@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = (import.meta.env.VITE_API_URL || '') + '/api';
 
 /**
  * Custom hook to fetch page content from the CMS
@@ -18,7 +18,7 @@ export const usePageContent = (pageId, fallback = {}) => {
         try {
             setLoading(true);
             const { data } = await axios.get(`${API_URL}/content/${pageId}`);
-            
+
             // Merge with fallback to ensure all keys exist
             const mergedContent = { ...fallback };
             for (const [sectionId, sectionContent] of Object.entries(data)) {
@@ -27,7 +27,7 @@ export const usePageContent = (pageId, fallback = {}) => {
                     ...sectionContent
                 };
             }
-            
+
             setContent(mergedContent);
             setError(null);
         } catch (err) {

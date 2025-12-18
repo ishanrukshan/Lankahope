@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import PageTitle from '../components/PageTitle';
 import axios from 'axios';
+import API from '../config/api';
+import PageTitle from '../components/PageTitle';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const Contact = () => {
         e.preventDefault();
         setStatus('Submitting...');
         try {
-            await axios.post('http://localhost:5000/api/contact', formData);
+            await axios.post(API.url('/api/contact'), formData);
             setStatus('Message sent successfully!');
             setFormData({ name: '', email: '', subject: '', message: '' });
         } catch (error) {

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import API from '../config/api';
 import PageTitle from '../components/PageTitle';
 import TeamCard from '../components/TeamCard';
-import axios from 'axios';
 import AOS from 'aos';
 
 const OurTeam = () => {
@@ -15,7 +16,7 @@ const OurTeam = () => {
     useEffect(() => {
         const fetchTeam = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/team');
+                const { data } = await axios.get(API.url('/api/team'));
                 setTeam(data);
                 setLoading(false);
             } catch (error) {
@@ -38,8 +39,8 @@ const OurTeam = () => {
 
     return (
         <div className="bg-white min-h-screen">
-            <PageTitle 
-                title="Our Team" 
+            <PageTitle
+                title="Our Team"
                 subtitle="Meet the dedicated professionals driving health research excellence"
                 breadcrumb={[
                     { label: 'About Us', path: null },
@@ -54,8 +55,8 @@ const OurTeam = () => {
                         Leadership & Staff
                     </h2>
                     <p data-aos="fade-up" data-aos-delay="100" className="text-gray-600 leading-relaxed text-lg">
-                        Our team comprises experienced researchers, administrators, and support staff dedicated to advancing 
-                        health research in Sri Lanka. Together, we work towards our mission of improving health outcomes 
+                        Our team comprises experienced researchers, administrators, and support staff dedicated to advancing
+                        health research in Sri Lanka. Together, we work towards our mission of improving health outcomes
                         through evidence-based research and collaboration.
                     </p>
                 </div>
@@ -94,11 +95,11 @@ const OurTeam = () => {
                         Join Our Team
                     </h2>
                     <p data-aos="fade-up" data-aos-delay="100" className="text-gray-300 leading-relaxed mb-8">
-                        We are always looking for talented individuals passionate about health research and making a difference. 
+                        We are always looking for talented individuals passionate about health research and making a difference.
                         Explore career opportunities at LankaHope and be part of our mission.
                     </p>
-                    <button 
-                        data-aos="fade-up" 
+                    <button
+                        data-aos="fade-up"
                         data-aos-delay="200"
                         className="px-8 py-3 bg-sl-gold text-white hover:bg-yellow-600 transition-all duration-300 uppercase text-sm tracking-widest font-bold rounded"
                     >

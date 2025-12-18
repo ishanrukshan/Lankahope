@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import API from '../../config/api';
 import { FaPlus, FaTrash, FaSpinner, FaBullhorn, FaLink, FaExternalLinkAlt } from 'react-icons/fa';
 
 const AnnouncementsManager = () => {
@@ -22,7 +23,7 @@ const AnnouncementsManager = () => {
     const fetchAnnouncements = async () => {
         try {
             setLoading(true);
-            const result = await axios.get('http://localhost:5000/api/announcements');
+            const result = await axios.get(API.url('/api/announcements'));
             setAnnouncements(result.data);
         } catch (error) {
             console.error('Error fetching announcements', error);
@@ -35,7 +36,7 @@ const AnnouncementsManager = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this announcement?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/announcements/${id}`, config);
+                await axios.delete(API.url(`/api/announcements/${id}`), config);
                 setMessage({ type: 'success', text: 'Announcement deleted successfully' });
                 fetchAnnouncements();
                 setTimeout(() => setMessage({ type: '', text: '' }), 3000);
@@ -50,7 +51,7 @@ const AnnouncementsManager = () => {
         setSubmitting(true);
 
         try {
-            await axios.post('http://localhost:5000/api/announcements', formData, config);
+            await axios.post(API.url('/api/announcements'), formData, config);
             setMessage({ type: 'success', text: 'Announcement added successfully!' });
             setFormData({ text: '', link: '' });
             fetchAnnouncements();
@@ -117,8 +118,8 @@ const AnnouncementsManager = () => {
                             />
                         </div>
                     </div>
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         disabled={submitting}
                         className="w-full md:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-3 px-8 rounded-lg shadow hover:from-orange-600 hover:to-orange-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     >
@@ -140,7 +141,7 @@ const AnnouncementsManager = () => {
             {/* Announcements List */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <h3 className="text-lg font-bold mb-6 text-gray-800">Current Announcements</h3>
-                
+
                 {loading ? (
                     <div className="flex items-center justify-center py-12">
                         <FaSpinner className="animate-spin text-3xl text-gray-400" />
@@ -153,8 +154,8 @@ const AnnouncementsManager = () => {
                 ) : (
                     <div className="space-y-3">
                         {announcements.map((item, index) => (
-                            <div 
-                                key={item._id} 
+                            <div
+                                key={item._id}
                                 className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 hover:shadow-sm transition-all group"
                             >
                                 <div className="flex items-center gap-4">
@@ -166,9 +167,9 @@ const AnnouncementsManager = () => {
                                             <FaLink className="text-orange-400 text-sm" />
                                             {item.text}
                                         </h4>
-                                        <a 
-                                            href={item.link} 
-                                            target="_blank" 
+                                        <a
+                                            href={item.link}
+                                            target="_blank"
                                             rel="noopener noreferrer"
                                             className="text-sm text-blue-600 hover:underline flex items-center gap-1"
                                         >

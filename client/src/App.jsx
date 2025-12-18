@@ -9,7 +9,9 @@ import OurTeam from './pages/OurTeam';
 import Resources from './pages/Resources';
 import Symposium from './pages/Symposium';
 import NewsEvents from './pages/NewsEvents';
+import EventDetails from './pages/EventDetails';
 import Contact from './pages/Contact';
+import Gallery from './pages/Gallery';
 import PageTitle from './components/PageTitle';
 
 import AdminLogin from './pages/AdminLogin';
@@ -19,6 +21,7 @@ import EventsManager from './pages/admin/EventsManager';
 import AnnouncementsManager from './pages/admin/AnnouncementsManager';
 import ContentManager from './pages/admin/ContentManager';
 import ImageManager from './pages/admin/ImageManager';
+import GalleryManager from './pages/admin/GalleryManager';
 import SettingsManager from './pages/admin/SettingsManager';
 
 import AOS from 'aos';
@@ -40,8 +43,8 @@ const AboutBoard = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      <PageTitle 
-        title="Board / Committee" 
+      <PageTitle
+        title="Board / Committee"
         subtitle="Governance and oversight of LankaHope"
         breadcrumb={[
           { label: 'About Us', path: null },
@@ -55,7 +58,7 @@ const AboutBoard = () => {
             Governing Board
           </h2>
           <p data-aos="fade-up" data-aos-delay="100" className="text-gray-600 leading-relaxed text-lg">
-            The Board of Directors provides strategic direction and oversight for LankaHope, 
+            The Board of Directors provides strategic direction and oversight for LankaHope,
             ensuring that the organization fulfills its mandate to advance health research in Sri Lanka.
           </p>
         </div>
@@ -65,7 +68,7 @@ const AboutBoard = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {boardMembers.map((member, index) => (
-              <div 
+              <div
                 key={index}
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
@@ -109,7 +112,10 @@ function App() {
           <Route path="/about/board" element={<AboutBoard />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/symposium" element={<Symposium />} />
+          <Route path="/symposium" element={<Symposium />} />
           <Route path="/news-events" element={<NewsEvents />} />
+          <Route path="/news-events/:id" element={<EventDetails />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
 
@@ -122,6 +128,7 @@ function App() {
           <Route path="events" element={<EventsManager />} />
           <Route path="announcements" element={<AnnouncementsManager />} />
           <Route path="content" element={<ContentManager />} />
+          <Route path="gallery" element={<GalleryManager />} />
           <Route path="images" element={<ImageManager />} />
           <Route path="settings" element={<SettingsManager />} />
         </Route>

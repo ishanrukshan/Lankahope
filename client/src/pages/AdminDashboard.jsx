@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
-import { FaHome, FaUsers, FaCalendarAlt, FaBullhorn, FaEdit, FaImage, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaUsers, FaCalendarAlt, FaBullhorn, FaEdit, FaImage, FaImages, FaCog, FaSignOutAlt } from 'react-icons/fa';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -52,13 +52,12 @@ const AdminDashboard = () => {
                     <ul className="space-y-1 px-3">
                         {menuItems.map(item => (
                             <li key={item.path}>
-                                <Link 
-                                    to={item.path} 
-                                    className={`flex items-center space-x-3 py-3 px-4 rounded-lg transition-all ${
-                                        isActive(item.path) 
-                                            ? 'bg-sl-maroon text-white' 
-                                            : 'text-gray-300 hover:bg-gray-800'
-                                    }`}
+                                <Link
+                                    to={item.path}
+                                    className={`flex items-center space-x-3 py-3 px-4 rounded-lg transition-all ${isActive(item.path)
+                                        ? 'bg-sl-maroon text-white'
+                                        : 'text-gray-300 hover:bg-gray-800'
+                                        }`}
                                 >
                                     <span className={isActive(item.path) ? 'text-sl-gold' : ''}>{item.icon}</span>
                                     <span>{item.label}</span>
@@ -89,7 +88,7 @@ const AdminDashboard = () => {
                             <h1 className="text-3xl font-bold text-gray-800 mb-2">Dashboard Overview</h1>
                             <p className="text-gray-600">Welcome to the LankaHope Admin Panel. Manage your website content from here.</p>
                         </div>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <Link to="/admin/dashboard/content" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-sl-maroon hover:shadow-md transition-all group">
                                 <div className="flex items-center justify-between mb-4">
@@ -99,7 +98,16 @@ const AdminDashboard = () => {
                                 <h3 className="font-bold text-gray-800 group-hover:text-sl-maroon">Page Content</h3>
                                 <p className="text-sm text-gray-600 mt-2">Edit text content on any page of the website.</p>
                             </Link>
-                            
+
+                            <Link to="/admin/dashboard/gallery" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500 hover:shadow-md transition-all group">
+                                <div className="flex items-center justify-between mb-4">
+                                    <FaImages className="text-3xl text-blue-500" />
+                                    <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">New</span>
+                                </div>
+                                <h3 className="font-bold text-gray-800 group-hover:text-sl-maroon">Gallery</h3>
+                                <p className="text-sm text-gray-600 mt-2">Manage image galleries for various sections.</p>
+                            </Link>
+
                             <Link to="/admin/dashboard/images" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-sl-gold hover:shadow-md transition-all group">
                                 <div className="flex items-center justify-between mb-4">
                                     <FaImage className="text-3xl text-sl-gold" />
@@ -108,25 +116,25 @@ const AdminDashboard = () => {
                                 <h3 className="font-bold text-gray-800 group-hover:text-sl-maroon">Image Manager</h3>
                                 <p className="text-sm text-gray-600 mt-2">Upload, replace, and delete images across the site.</p>
                             </Link>
-                            
+
                             <Link to="/admin/dashboard/team" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500 hover:shadow-md transition-all group">
                                 <FaUsers className="text-3xl text-blue-500 mb-4" />
                                 <h3 className="font-bold text-gray-800 group-hover:text-sl-maroon">Team Members</h3>
                                 <p className="text-sm text-gray-600 mt-2">Add or remove staff photos and details.</p>
                             </Link>
-                            
+
                             <Link to="/admin/dashboard/events" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-purple-500 hover:shadow-md transition-all group">
                                 <FaCalendarAlt className="text-3xl text-purple-500 mb-4" />
                                 <h3 className="font-bold text-gray-800 group-hover:text-sl-maroon">News & Events</h3>
                                 <p className="text-sm text-gray-600 mt-2">Post upcoming events and news updates.</p>
                             </Link>
-                            
+
                             <Link to="/admin/dashboard/announcements" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-orange-500 hover:shadow-md transition-all group">
                                 <FaBullhorn className="text-3xl text-orange-500 mb-4" />
                                 <h3 className="font-bold text-gray-800 group-hover:text-sl-maroon">Announcements</h3>
                                 <p className="text-sm text-gray-600 mt-2">Update footer announcements and links.</p>
                             </Link>
-                            
+
                             <Link to="/admin/dashboard/settings" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-gray-500 hover:shadow-md transition-all group">
                                 <div className="flex items-center justify-between mb-4">
                                     <FaCog className="text-3xl text-gray-500" />

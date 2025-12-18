@@ -3,6 +3,7 @@ import PageTitle from '../components/PageTitle';
 import { FaUserTie, FaUsers, FaBuilding, FaCogs, FaSpinner } from 'react-icons/fa';
 import AOS from 'aos';
 import axios from 'axios';
+import API from '../config/api';
 
 const AboutAdministration = () => {
     const [content, setContent] = useState({});
@@ -15,7 +16,7 @@ const AboutAdministration = () => {
 
     const fetchContent = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/content/about-administration');
+            const { data } = await axios.get(API.url('/api/content/about-administration'));
             setContent(data);
             setLoading(false);
         } catch (error) {

@@ -1,8 +1,13 @@
 import express from 'express';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import TeamMember from '../models/TeamMember.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import upload from '../middleware/uploadMiddleware.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const router = express.Router();
 
 // @desc    Get all team members
@@ -52,7 +57,20 @@ router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
             member.title = req.body.title || member.title;
             member.bio = req.body.bio || member.bio;
             member.order = req.body.order || member.order;
+
+            // If new file uploaded, delete old file
             if (req.file) {
+                // Delete old image file if exists
+                if (member.imagePath) {
+                    const oldFilePath = path.join(__dirname, '..', member.imagePath);
+                    try {
+                        if (fs.existsSync(oldFilePath)) {
+                            fs.unlinkSync(oldFilePath);
+                        }
+                    } catch (err) {
+                        console.error('Error deleting old file:', err);
+                    }
+                }
                 member.imagePath = `/uploads/${req.file.filename}`;
             }
 
@@ -74,13 +92,26 @@ router.delete('/:id', protect, admin, async (req, res) => {
         const member = await TeamMember.findById(req.params.id);
 
         if (member) {
+            // Delete file from filesystem if exists
+            if (member.imagePath) {
+                const filePath = path.join(__dirname, '..', member.imagePath);
+                try {
+                    if (fs.existsSync(filePath)) {
+                        fs.unlinkSync(filePath);
+                    }
+                } catch (err) {
+                    console.error('Error deleting file:', err);
+                    // Continue with database deletion
+                }
+            }
+
             await member.deleteOne();
             res.json({ message: 'Team member removed' });
         } else {
             res.status(404).json({ message: 'Team member not found' });
         }
     } catch (error) {
-        res.status(500).json({ message: server.message });
+        res.status(500).json({ message: 'Server Error' });
     }
 });
 

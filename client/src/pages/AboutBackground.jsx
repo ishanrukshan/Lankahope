@@ -3,6 +3,7 @@ import PageTitle from '../components/PageTitle';
 import { FaEye, FaBullseye, FaHandshake, FaBalanceScale, FaSpinner } from 'react-icons/fa';
 import AOS from 'aos';
 import axios from 'axios';
+import API from '../config/api';
 
 const AboutBackground = () => {
     const [content, setContent] = useState({});
@@ -15,7 +16,7 @@ const AboutBackground = () => {
 
     const fetchContent = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/content/about-background');
+            const { data } = await axios.get(API.url('/api/content/about-background'));
             setContent(data);
             setLoading(false);
         } catch (error) {

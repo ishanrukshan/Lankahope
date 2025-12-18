@@ -10,14 +10,14 @@ const EventsManager = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
+        content: '',
         eventDate: '',
         type: 'NEWS',
         flyerImage: null
     });
     const [previewUrl, setPreviewUrl] = useState(null);
 
-    const token = localStorage.getItem('adminToken');
-    const config = { headers: { Authorization: `Bearer ${token}` } };
+
 
     useEffect(() => {
         fetchEvents();
@@ -26,7 +26,7 @@ const EventsManager = () => {
     const fetchEvents = async () => {
         try {
             setLoading(true);
-            const result = await axios.get('http://localhost:5000/api/events');
+            const result = await axios.get('/api/events');
             setEvents(result.data);
         } catch (error) {
             console.error('Error fetching events', error);
@@ -39,11 +39,18 @@ const EventsManager = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this item?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/events/${id}`, config);
+                const token = localStorage.getItem('adminToken');
+                await axios.delete(`/api/events/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
                 setMessage({ type: 'success', text: 'Item deleted successfully' });
                 fetchEvents();
                 setTimeout(() => setMessage({ type: '', text: '' }), 3000);
             } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    window.location.href = '/admin/login';
+                    return;
+                }
                 setMessage({ type: 'error', text: 'Failed to delete' });
             }
         }
@@ -68,6 +75,7 @@ const EventsManager = () => {
         const data = new FormData();
         data.append('title', formData.title);
         data.append('description', formData.description);
+        data.append('content', formData.content);
         data.append('eventDate', formData.eventDate);
         data.append('type', formData.type);
         if (formData.flyerImage) {
@@ -75,20 +83,25 @@ const EventsManager = () => {
         }
 
         try {
-            await axios.post('http://localhost:5000/api/events', data, {
+            const token = localStorage.getItem('adminToken');
+            await axios.post('/api/events', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`
                 }
             });
             setMessage({ type: 'success', text: 'Item created successfully!' });
-            setFormData({ title: '', description: '', eventDate: '', type: 'NEWS', flyerImage: null });
+            setFormData({ title: '', description: '', content: '', eventDate: '', type: 'NEWS', flyerImage: null });
             setPreviewUrl(null);
             document.getElementById('fileInput').value = "";
             fetchEvents();
             setTimeout(() => setMessage({ type: '', text: '' }), 3000);
         } catch (error) {
             console.error(error);
+            if (error.response && error.response.status === 401) {
+                window.location.href = '/admin/login';
+                return;
+            }
             setMessage({ type: 'error', text: 'Failed to create. Please try again.' });
         } finally {
             setSubmitting(false);
@@ -139,11 +152,11 @@ const EventsManager = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Title / Headline *</label>
                             <input
-                                type="text" 
-                                name="title" 
-                                placeholder="Enter title" 
+                                type="text"
+                                name="title"
+                                placeholder="Enter title"
                                 required
-                                value={formData.title} 
+                                value={formData.title}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
                             />
@@ -151,8 +164,8 @@ const EventsManager = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Type *</label>
                             <select
-                                name="type" 
-                                value={formData.type} 
+                                name="type"
+                                value={formData.type}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
                             >
@@ -163,10 +176,10 @@ const EventsManager = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
                             <input
-                                type="date" 
+                                type="date"
                                 name="eventDate"
                                 required
-                                value={formData.eventDate} 
+                                value={formData.eventDate}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
                             />
@@ -175,8 +188,8 @@ const EventsManager = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Flyer / Image</label>
                             <div className="flex items-center gap-4">
                                 <input
-                                    type="file" 
-                                    id="fileInput" 
+                                    type="file"
+                                    id="fileInput"
                                     onChange={handleFileChange}
                                     accept="image/*"
                                     className="w-full border border-gray-300 p-2 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
@@ -190,16 +203,27 @@ const EventsManager = () => {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Description / Summary</label>
                         <textarea
-                            name="description" 
+                            name="description"
                             placeholder="Enter description or summary"
-                            value={formData.description} 
+                            value={formData.description}
                             onChange={handleInputChange}
                             rows={3}
                             className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
                         ></textarea>
                     </div>
-                    <button 
-                        type="submit" 
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Content / Article</label>
+                        <textarea
+                            name="content"
+                            placeholder="Enter full article content (optional)"
+                            value={formData.content}
+                            onChange={handleInputChange}
+                            rows={6}
+                            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all font-mono text-sm"
+                        ></textarea>
+                    </div>
+                    <button
+                        type="submit"
                         disabled={submitting}
                         className="w-full md:w-auto bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold py-3 px-8 rounded-lg shadow hover:from-purple-600 hover:to-purple-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     >
@@ -221,7 +245,7 @@ const EventsManager = () => {
             {/* Events List */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <h3 className="text-lg font-bold mb-6 text-gray-800">Current Items</h3>
-                
+
                 {loading ? (
                     <div className="flex items-center justify-center py-12">
                         <FaSpinner className="animate-spin text-3xl text-gray-400" />
@@ -248,10 +272,10 @@ const EventsManager = () => {
                                     <tr key={event._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                                         <td className="p-4">
                                             {event.flyerImagePath ? (
-                                                <img 
-                                                    src={`http://localhost:5000${event.flyerImagePath}`} 
-                                                    alt="flyer" 
-                                                    className="w-12 h-12 object-cover rounded-lg border border-gray-200" 
+                                                <img
+                                                    src={event.flyerImagePath}
+                                                    alt="flyer"
+                                                    className="w-12 h-12 object-cover rounded-lg border border-gray-200"
                                                 />
                                             ) : (
                                                 <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
@@ -267,11 +291,10 @@ const EventsManager = () => {
                                             })}
                                         </td>
                                         <td className="p-4">
-                                            <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${
-                                                event.type === 'EVENT' 
-                                                    ? 'bg-purple-100 text-purple-800' 
-                                                    : 'bg-blue-100 text-blue-800'
-                                            }`}>
+                                            <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${event.type === 'EVENT'
+                                                ? 'bg-purple-100 text-purple-800'
+                                                : 'bg-blue-100 text-blue-800'
+                                                }`}>
                                                 {event.type === 'EVENT' ? '📅 Event' : '📰 News'}
                                             </span>
                                         </td>

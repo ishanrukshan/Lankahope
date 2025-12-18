@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import API from '../../config/api';
 import { FaArrowLeft, FaSave, FaSpinner, FaCheck, FaTimes, FaCog, FaPhone, FaShare, FaFootballBall, FaPalette } from 'react-icons/fa';
 
 const SettingsManager = () => {
@@ -31,7 +32,7 @@ const SettingsManager = () => {
     const fetchSettings = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('http://localhost:5000/api/settings/all', config);
+            const { data } = await axios.get(API.url('/api/settings/all'), config);
             setSettings(data);
             
             // Create edited settings object
@@ -58,7 +59,7 @@ const SettingsManager = () => {
     const handleSave = async () => {
         try {
             setSaving(true);
-            await axios.put('http://localhost:5000/api/settings', { settings: editedSettings }, config);
+            await axios.put(API.url('/api/settings'), { settings: editedSettings }, config);
             setMessage({ type: 'success', text: 'Settings saved successfully!' });
             setTimeout(() => setMessage({ type: '', text: '' }), 3000);
         } catch (error) {
@@ -71,7 +72,7 @@ const SettingsManager = () => {
     const initializeSettings = async () => {
         try {
             setLoading(true);
-            await axios.post('http://localhost:5000/api/settings/initialize', {}, config);
+            await axios.post(API.url('/api/settings/initialize'), {}, config);
             setMessage({ type: 'success', text: 'Settings initialized!' });
             fetchSettings();
         } catch (error) {

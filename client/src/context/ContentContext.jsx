@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = (import.meta.env.VITE_API_URL || '') + '/api';
 
 // Create contexts
 const ContentContext = createContext();
@@ -24,7 +24,7 @@ export const ContentProvider = ({ children }) => {
         try {
             setLoading(true);
             const { data } = await axios.get(`${API_URL}/content/${pageId}`);
-            
+
             // Merge with fallback
             const mergedContent = { ...fallback };
             for (const [sectionId, sectionContent] of Object.entries(data)) {
@@ -33,13 +33,13 @@ export const ContentProvider = ({ children }) => {
                     ...sectionContent
                 };
             }
-            
+
             // Cache the content
             setContentCache(prev => ({
                 ...prev,
                 [pageId]: mergedContent
             }));
-            
+
             return mergedContent;
         } catch (error) {
             console.error(`Error fetching content for ${pageId}:`, error);
@@ -65,7 +65,7 @@ export const ContentProvider = ({ children }) => {
     // Prefetch content for multiple pages
     const prefetchContent = useCallback(async (pageIds) => {
         const uncachedPages = pageIds.filter(id => !contentCache[id]);
-        
+
         await Promise.all(
             uncachedPages.map(pageId => getPageContent(pageId))
         );

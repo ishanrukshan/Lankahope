@@ -3,6 +3,7 @@ import PageTitle from '../components/PageTitle';
 import { FaFlask, FaHospital, FaUniversity, FaMicroscope, FaGlobe, FaLeaf, FaSpinner } from 'react-icons/fa';
 import AOS from 'aos';
 import axios from 'axios';
+import API from '../config/api';
 
 const AboutResearch = () => {
     const [content, setContent] = useState({});
@@ -15,7 +16,7 @@ const AboutResearch = () => {
 
     const fetchContent = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/content/about-research');
+            const { data } = await axios.get(API.url('/api/content/about-research'));
             setContent(data);
             setLoading(false);
         } catch (error) {

@@ -33,7 +33,7 @@ const fileFilter = (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|webp|svg/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
-    
+
     if (extname && mimetype) {
         return cb(null, true);
     }
@@ -53,15 +53,15 @@ router.get('/', protect, admin, async (req, res) => {
     try {
         const { pageId, category } = req.query;
         const query = { isActive: true };
-        
+
         if (pageId) query.pageId = pageId;
         if (category) query.category = category;
-        
+
         const images = await SiteImage.find(query)
             .sort({ createdAt: -1 })
             .populate('uploadedBy', 'name email')
             .lean();
-            
+
         res.json(images);
     } catch (error) {
         console.error('Error fetching images:', error);
@@ -106,9 +106,9 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
         if (!req.file) {
             return res.status(400).json({ message: 'No image file provided' });
         }
-        
+
         const { name, pageId, sectionId, altText, description, category } = req.body;
-        
+
         // Check if name already exists
         if (name) {
             const existing = await SiteImage.findOne({ name });
@@ -118,7 +118,7 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
                 return res.status(400).json({ message: 'Image with this name already exists' });
             }
         }
-        
+
         const image = new SiteImage({
             name: name || req.file.filename.split('.')[0],
             originalName: req.file.originalname,
@@ -134,7 +134,7 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
             mimeType: req.file.mimetype,
             uploadedBy: req.user._id
         });
-        
+
         await image.save();
         res.status(201).json(image);
     } catch (error) {
@@ -155,10 +155,10 @@ router.post('/bulk', protect, admin, upload.array('images', 10), async (req, res
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ message: 'No image files provided' });
         }
-        
+
         const { pageId, category } = req.body;
         const uploadedImages = [];
-        
+
         for (const file of req.files) {
             const image = new SiteImage({
                 name: file.filename.split('.')[0],
@@ -172,11 +172,11 @@ router.post('/bulk', protect, admin, upload.array('images', 10), async (req, res
                 mimeType: file.mimetype,
                 uploadedBy: req.user._id
             });
-            
+
             await image.save();
             uploadedImages.push(image);
         }
-        
+
         res.status(201).json(uploadedImages);
     } catch (error) {
         console.error('Error uploading images:', error);
@@ -190,12 +190,12 @@ router.post('/bulk', protect, admin, upload.array('images', 10), async (req, res
 router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
     try {
         const image = await SiteImage.findById(req.params.id);
-        
+
         if (!image) {
             if (req.file) fs.unlinkSync(req.file.path);
             return res.status(404).json({ message: 'Image not found' });
         }
-        
+
         // Update metadata
         if (req.body.name) image.name = req.body.name;
         if (req.body.pageId !== undefined) image.pageId = req.body.pageId;
@@ -203,15 +203,20 @@ router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
         if (req.body.altText !== undefined) image.altText = req.body.altText;
         if (req.body.description !== undefined) image.description = req.body.description;
         if (req.body.category) image.category = req.body.category;
-        
+
         // Replace file if new one uploaded
         if (req.file) {
             // Delete old file
             const oldPath = path.join(__dirname, '..', image.path);
-            if (fs.existsSync(oldPath)) {
-                fs.unlinkSync(oldPath);
+            try {
+                if (fs.existsSync(oldPath)) {
+                    fs.unlinkSync(oldPath);
+                }
+            } catch (err) {
+                console.error('Error deleting old file:', err);
+                // Continue with update
             }
-            
+
             // Update with new file info
             image.originalName = req.file.originalname;
             image.filename = req.file.filename;
@@ -220,10 +225,10 @@ router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
             image.size = req.file.size;
             image.mimeType = req.file.mimetype;
         }
-        
+
         image.uploadedBy = req.user._id;
         await image.save();
-        
+
         res.json(image);
     } catch (error) {
         console.error('Error updating image:', error);
@@ -240,17 +245,22 @@ router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
 router.delete('/:id', protect, admin, async (req, res) => {
     try {
         const image = await SiteImage.findById(req.params.id);
-        
+
         if (!image) {
             return res.status(404).json({ message: 'Image not found' });
         }
-        
+
         // Delete file from filesystem
         const filePath = path.join(__dirname, '..', image.path);
-        if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
+        try {
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        } catch (err) {
+            console.error('Error deleting file:', err);
+            // Continue with database deletion even if file is missing
         }
-        
+
         await image.deleteOne();
         res.json({ message: 'Image deleted successfully' });
     } catch (error) {

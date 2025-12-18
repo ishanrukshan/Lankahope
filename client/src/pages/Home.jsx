@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import API from '../config/api';
 import bmichImage from '../assets/bmich.jfif';
+import HeroSlideshow from '../components/HeroSlideshow';
 import chairmanImage from '../assets/chirmen.jpg';
 import { FaArrowRight, FaMapMarkerAlt, FaSchool } from 'react-icons/fa';
 
@@ -13,7 +15,7 @@ const Home = () => {
     useEffect(() => {
         const fetchContent = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/content/home');
+                const { data } = await axios.get(API.url('/api/content/home'));
                 setContent(data);
             } catch (error) {
                 console.error('Error fetching content:', error);
@@ -22,7 +24,7 @@ const Home = () => {
 
         const fetchImages = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/images/page/home');
+                const { data } = await axios.get(API.url('/api/images/page/home'));
                 setImages(data);
             } catch (error) {
                 console.error('Error fetching images:', error);
@@ -43,21 +45,18 @@ const Home = () => {
     // Helper to get images by section
     const getImage = (sectionId) => {
         const image = images.find(img => img.sectionId === sectionId);
-        return image ? `http://localhost:5000${image.url}` : null;
+        return image ? API.imageUrl(image.url) : null;
     };
 
     return (
         <div className="font-sans text-gray-800">
             {/* 1. Hero Section - Full Screen Cinematic */}
             <section className="relative h-screen w-full overflow-hidden">
-                {/* Background Image with Animation */}
-                <div
-                    className="absolute inset-0 bg-cover bg-center animate-hero-bg"
-                    style={{ backgroundImage: `url(${getImage('hero') || bmichImage})` }}
-                >
-                    {/* Dark Overlay for text readability */}
-                    <div className="absolute inset-0 bg-black/40"></div>
-                </div>
+                {/* Background Slideshow */}
+                <HeroSlideshow 
+                    images={images.filter(img => img.sectionId === 'hero')} 
+                    fallbackImage={bmichImage} 
+                />
 
                 <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 md:px-0">
                     <p className="text-sl-gold uppercase tracking-[0.3em] font-medium mb-4 text-xs md:text-sm animate-fade-in-up delay-700">

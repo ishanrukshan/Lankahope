@@ -16,8 +16,7 @@ const TeamManager = () => {
     });
     const [previewUrl, setPreviewUrl] = useState(null);
 
-    const token = localStorage.getItem('adminToken');
-    const config = { headers: { Authorization: `Bearer ${token}` } };
+
 
     useEffect(() => {
         fetchTeam();
@@ -26,7 +25,7 @@ const TeamManager = () => {
     const fetchTeam = async () => {
         try {
             setLoading(true);
-            const result = await axios.get('http://localhost:5000/api/team');
+            const result = await axios.get('/api/team');
             setTeam(result.data);
         } catch (error) {
             console.error('Error fetching team', error);
@@ -39,11 +38,18 @@ const TeamManager = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this member?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/team/${id}`, config);
+                const token = localStorage.getItem('adminToken');
+                await axios.delete(`/api/team/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
                 setMessage({ type: 'success', text: 'Member deleted successfully' });
                 fetchTeam();
                 setTimeout(() => setMessage({ type: '', text: '' }), 3000);
             } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    window.location.href = '/admin/login';
+                    return;
+                }
                 setMessage({ type: 'error', text: 'Failed to delete member' });
             }
         }
@@ -75,7 +81,8 @@ const TeamManager = () => {
         }
 
         try {
-            await axios.post('http://localhost:5000/api/team', data, {
+            const token = localStorage.getItem('adminToken');
+            await axios.post('/api/team', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`
@@ -89,6 +96,10 @@ const TeamManager = () => {
             setTimeout(() => setMessage({ type: '', text: '' }), 3000);
         } catch (error) {
             console.error(error);
+            if (error.response && error.response.status === 401) {
+                window.location.href = '/admin/login';
+                return;
+            }
             setMessage({ type: 'error', text: 'Failed to add member. Please try again.' });
         } finally {
             setSubmitting(false);
@@ -129,11 +140,11 @@ const TeamManager = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                             <input
-                                type="text" 
-                                name="name" 
-                                placeholder="Enter full name" 
+                                type="text"
+                                name="name"
+                                placeholder="Enter full name"
                                 required
-                                value={formData.name} 
+                                value={formData.name}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                             />
@@ -141,11 +152,11 @@ const TeamManager = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Job Title *</label>
                             <input
-                                type="text" 
-                                name="title" 
-                                placeholder="Enter job title" 
+                                type="text"
+                                name="title"
+                                placeholder="Enter job title"
                                 required
-                                value={formData.title} 
+                                value={formData.title}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                             />
@@ -153,10 +164,10 @@ const TeamManager = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
                             <input
-                                type="number" 
-                                name="order" 
+                                type="number"
+                                name="order"
                                 placeholder="0"
-                                value={formData.order} 
+                                value={formData.order}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                             />
@@ -165,8 +176,8 @@ const TeamManager = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Profile Photo</label>
                             <div className="flex items-center gap-4">
                                 <input
-                                    type="file" 
-                                    id="fileInput" 
+                                    type="file"
+                                    id="fileInput"
                                     onChange={handleFileChange}
                                     accept="image/*"
                                     className="w-full border border-gray-300 p-2 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
@@ -180,16 +191,16 @@ const TeamManager = () => {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Bio / Description</label>
                         <textarea
-                            name="bio" 
+                            name="bio"
                             placeholder="Enter short biography or description"
-                            value={formData.bio} 
+                            value={formData.bio}
                             onChange={handleInputChange}
                             rows={3}
                             className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                         ></textarea>
                     </div>
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         disabled={submitting}
                         className="w-full md:w-auto bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 px-8 rounded-lg shadow hover:from-green-600 hover:to-green-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     >
@@ -211,7 +222,7 @@ const TeamManager = () => {
             {/* Team List */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <h3 className="text-lg font-bold mb-6 text-gray-800">Current Team Members</h3>
-                
+
                 {loading ? (
                     <div className="flex items-center justify-center py-12">
                         <FaSpinner className="animate-spin text-3xl text-gray-400" />
@@ -228,9 +239,9 @@ const TeamManager = () => {
                                 <div className="flex items-start gap-4">
                                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex-shrink-0 overflow-hidden">
                                         {member.imagePath ? (
-                                            <img 
-                                                src={`http://localhost:5000${member.imagePath}`} 
-                                                alt={member.name} 
+                                            <img
+                                                src={member.imagePath}
+                                                alt={member.name}
                                                 className="w-full h-full object-cover"
                                             />
                                         ) : (

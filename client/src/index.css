@@ -1,13 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+Sinhala:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* Prevent horizontal overflow on mobile */
+html,
+body {
+    overflow-x: hidden;
+}
+
 @layer utilities {
+
     /* Hero Background Fade In with Zoom */
     @keyframes hero-bg-reveal {
         0% {
             opacity: 0;
             transform: scale(1.1);
         }
+
         100% {
             opacity: 1;
             transform: scale(1);
@@ -20,6 +28,7 @@
             opacity: 0;
             transform: translateY(-100%);
         }
+
         100% {
             opacity: 1;
             transform: translateY(0);
@@ -32,6 +41,7 @@
             opacity: 0;
             transform: translateY(30px);
         }
+
         100% {
             opacity: 1;
             transform: translateY(0);
@@ -43,6 +53,7 @@
         0% {
             opacity: 0;
         }
+
         100% {
             opacity: 1;
         }
@@ -54,7 +65,7 @@
     }
 
     .animate-slide-down {
-        animation: slide-down 0.8s ease-out forwards;
+        animation: fade-in 0.8s ease-out forwards;
     }
 
     .animate-fade-in-up {

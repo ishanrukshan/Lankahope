@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaCaretDown, FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaLinkedinIn } from 'react-icons/fa';
 
+// WhatsApp donation link helper
+const getWhatsAppDonateLink = () => {
+    const phoneNumber = '94774411719'; // Sri Lankan number in international format
+    const message = "Hello! I'm interested in supporting LankaHope. Could you please provide me with information on how I can make a donation? Thank you!";
+    const encodedMessage = encodeURIComponent(message);
+    return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+};
+
 const Header = () => {
     const [isAboutOpen, setIsAboutOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -40,7 +48,7 @@ const Header = () => {
     const NavLinks = ({ mobile = false }) => (
         <>
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/" className={`block py-2 ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold' : 'text-gray-700 hover:text-sl-maroon'}`}>
+                <Link to="/" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
                     HOME
                 </Link>
             </li>
@@ -53,38 +61,42 @@ const Header = () => {
             >
                 <button
                     onClick={mobile ? toggleMobileAbout : undefined}
-                    className={`flex items-center w-full ${mobile ? 'justify-start text-left' : 'justify-center lg:w-auto'} py-2 ${mobile ? '' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all border-b-2 border-transparent hover:border-sl-maroon focus:outline-none ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold' : 'text-gray-700 hover:text-sl-maroon'}`}
+                    className={`flex items-center w-full ${mobile ? 'justify-start text-left' : 'justify-center lg:w-auto'} py-2 px-3 rounded-lg ${mobile ? '' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon focus:outline-none ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}
                 >
-                    ABOUT US <FaCaretDown className={`ml-1 transform transition-transform ${(mobile ? isMobileAboutOpen : isAboutOpen) ? 'rotate-180' : ''} ${isHomePage && !isScrolled && !mobile ? 'text-sl-gold' : 'text-gray-400 group-hover:text-sl-maroon'}`} />
+                    ABOUT US <FaCaretDown className={`ml-1 transform transition-transform duration-300 ${(mobile ? isMobileAboutOpen : isAboutOpen) ? 'rotate-180' : ''} ${isHomePage && !isScrolled && !mobile ? 'text-sl-gold' : 'text-gray-400 group-hover:text-sl-maroon'}`} />
                 </button>
 
                 {/* Dropdown Menu */}
                 <div className={`${mobile ? (isMobileAboutOpen ? 'block' : 'hidden') : 'hidden group-hover:block'} ${mobile ? 'static w-full bg-gray-50 pl-4' : 'absolute top-full left-1/2 transform -translate-x-1/2 w-56 bg-gray-800/95 backdrop-blur-sm shadow-xl rounded-b-lg border-t-2 border-sl-gold'} transition-all duration-300 z-50`}>
-                    <Link to="/about/background" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all`}>Background</Link>
-                    <Link to="/about/administration" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all`}>Administration</Link>
-                    <Link to="/about/research-institutions" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all`}>Research Institutions</Link>
-                    <Link to="/about/team" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all`}>Our Team</Link>
-                    <Link to="/about/board" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold rounded-b-lg'} transition-all`}>Board / Committee</Link>
+                    <Link to="/about/background" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Background</Link>
+                    <Link to="/about/administration" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Administration</Link>
+                    <Link to="/about/team" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Our Team</Link>
+                    <Link to="/about/board" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold rounded-b-lg'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Board / Committee</Link>
                 </div>
             </li>
 
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/resources" className={`block py-2 ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold' : 'text-gray-700 hover:text-sl-maroon'}`}>
+                <Link to="/resources" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
                     RESOURCES
                 </Link>
             </li>
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/symposium" className={`block py-2 ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold' : 'text-gray-700 hover:text-sl-maroon'}`}>
+                <Link to="/symposium" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
                     SYMPOSIUM
                 </Link>
             </li>
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/news-events" className={`block py-2 ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold' : 'text-gray-700 hover:text-sl-maroon'}`}>
+                <Link to="/news-events" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
                     NEWS & EVENTS
                 </Link>
             </li>
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/contact" className={`block py-2 ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold' : 'text-gray-700 hover:text-sl-maroon'}`}>
+                <Link to="/gallery" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
+                    GALLERY
+                </Link>
+            </li>
+            <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
+                <Link to="/contact" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
                     CONTACT US
                 </Link>
             </li>
@@ -112,19 +124,24 @@ const Header = () => {
                             <NavLinks mobile={false} />
                             {/* Donate Button (from design) */}
                             <li>
-                                <button className="font-serif font-bold py-1.5 lg:py-2 px-3 lg:px-4 xl:px-6 text-xs xl:text-sm rounded transition-all duration-300 border-2 bg-[#D4AF37] border-[#D4AF37] text-white hover:bg-yellow-600 hover:border-yellow-600">
+                                <a
+                                    href={getWhatsAppDonateLink()}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-block text-center font-serif font-bold py-1.5 lg:py-2 px-3 lg:px-4 xl:px-6 text-xs xl:text-sm rounded transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-2xl border-2 bg-[#D4AF37] border-[#D4AF37] text-white hover:bg-yellow-600 hover:border-yellow-600 hover:shadow-yellow-500/50 active:scale-95"
+                                >
                                     Donate
-                                </button>
+                                </a>
                             </li>
                         </ul>
                     </nav>
 
                     {/* Mobile Menu Toggle */}
                     <button
-                        className={`lg:hidden focus:outline-none p-2 ${isScrolled ? 'text-sl-maroon' : 'text-white'}`}
+                        className={`lg:hidden focus:outline-none p-2 will-change-transform ${isScrolled ? 'text-sl-maroon' : 'text-white'}`}
                         onClick={toggleMobileMenu}
                     >
-                        {isMobileMenuOpen ? <div className="text-2xl">✕</div> : <div className="text-2xl">☰</div>}
+                        {isMobileMenuOpen ? <div key="close" className="text-2xl">✕</div> : <div key="open" className="text-2xl">☰</div>}
                     </button>
                 </div>
 
@@ -133,9 +150,14 @@ const Header = () => {
                     <ul className="flex flex-col p-4 space-y-2">
                         <NavLinks mobile={true} />
                         <li>
-                            <button className="w-full bg-[#D4AF37] border-2 border-[#D4AF37] text-white font-serif font-bold py-3 px-6 rounded hover:bg-yellow-600 hover:border-yellow-600 transition-colors mt-4">
+                            <a
+                                href={getWhatsAppDonateLink()}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block w-full text-center bg-[#D4AF37] border-2 border-[#D4AF37] text-white font-serif font-bold py-3 px-6 rounded hover:bg-yellow-600 hover:border-yellow-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/50 active:scale-95 mt-4"
+                            >
                                 Donate
-                            </button>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -161,19 +183,24 @@ const Header = () => {
                         <NavLinks mobile={false} />
                         {/* Donate Button */}
                         <li>
-                            <button className="font-serif font-bold py-1.5 lg:py-2 px-3 lg:px-4 xl:px-6 text-xs xl:text-sm rounded transition-all duration-300 border-2 bg-[#D4AF37] border-[#D4AF37] text-white hover:bg-yellow-600 hover:border-yellow-600">
+                            <a
+                                href={getWhatsAppDonateLink()}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block text-center font-serif font-bold py-1.5 lg:py-2 px-3 lg:px-4 xl:px-6 text-xs xl:text-sm rounded transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-2xl border-2 bg-[#D4AF37] border-[#D4AF37] text-white hover:bg-yellow-600 hover:border-yellow-600 hover:shadow-yellow-500/50 active:scale-95"
+                            >
                                 Donate
-                            </button>
+                            </a>
                         </li>
                     </ul>
                 </nav>
 
                 {/* Mobile Menu Toggle */}
                 <button
-                    className="lg:hidden text-sl-maroon focus:outline-none p-2"
+                    className="lg:hidden text-sl-maroon focus:outline-none p-2 will-change-transform"
                     onClick={toggleMobileMenu}
                 >
-                    {isMobileMenuOpen ? <div className="text-2xl">✕</div> : <div className="text-2xl">☰</div>}
+                    {isMobileMenuOpen ? <div key="close" className="text-2xl">✕</div> : <div key="open" className="text-2xl">☰</div>}
                 </button>
             </div>
 
@@ -182,9 +209,14 @@ const Header = () => {
                 <ul className="flex flex-col p-4 space-y-2">
                     <NavLinks mobile={true} />
                     <li>
-                        <button className="w-full bg-[#D4AF37] border-2 border-[#D4AF37] text-white font-serif font-bold py-3 px-6 rounded hover:bg-yellow-600 hover:border-yellow-600 transition-colors mt-4">
+                        <a
+                            href={getWhatsAppDonateLink()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block w-full text-center bg-[#D4AF37] border-2 border-[#D4AF37] text-white font-serif font-bold py-3 px-6 rounded hover:bg-yellow-600 hover:border-yellow-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/50 active:scale-95 mt-4"
+                        >
                             Donate
-                        </button>
+                        </a>
                     </li>
                 </ul>
             </div>

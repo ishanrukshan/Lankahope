@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import API from '../../config/api';
 import { FaArrowLeft, FaSave, FaEdit, FaSpinner, FaCheck, FaTimes } from 'react-icons/fa';
 
 const ContentManager = () => {
@@ -41,7 +42,7 @@ const ContentManager = () => {
 
     const fetchStructure = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/content/structure/all', config);
+            const { data } = await axios.get(API.url('/api/content/structure/all'), config);
             setStructure(data);
             setLoading(false);
         } catch (error) {
@@ -53,7 +54,7 @@ const ContentManager = () => {
     const fetchPageContent = async (pageId) => {
         try {
             setLoading(true);
-            const { data } = await axios.get(`http://localhost:5000/api/content/${pageId}`);
+            const { data } = await axios.get(API.url(`/api/content/${pageId}`));
             setPageContent(data);
             setEditedContent(JSON.parse(JSON.stringify(data))); // Deep copy
             setLoading(false);
@@ -77,7 +78,7 @@ const ContentManager = () => {
         try {
             setSaving(true);
             await axios.put(
-                `http://localhost:5000/api/content/${selectedPage}`,
+                API.url(`/api/content/${selectedPage}`),
                 { sections: editedContent },
                 config
             );
@@ -118,11 +119,10 @@ const ContentManager = () => {
                         <button
                             onClick={handleSave}
                             disabled={saving || !hasChanges()}
-                            className={`flex items-center space-x-2 px-6 py-2 rounded-lg transition-all ${
-                                hasChanges() 
-                                    ? 'bg-sl-maroon text-white hover:bg-sl-maroon/90' 
+                            className={`flex items-center space-x-2 px-6 py-2 rounded-lg transition-all ${hasChanges()
+                                    ? 'bg-sl-maroon text-white hover:bg-sl-maroon/90'
                                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                            }`}
+                                }`}
                         >
                             {saving ? <FaSpinner className="animate-spin" /> : <FaSave />}
                             <span>{saving ? 'Saving...' : hasChanges() ? 'Save Changes' : 'No Changes'}</span>
@@ -134,9 +134,8 @@ const ContentManager = () => {
             {/* Message */}
             {message.text && (
                 <div className={`max-w-7xl mx-auto px-4 mt-4`}>
-                    <div className={`p-4 rounded-lg flex items-center space-x-2 ${
-                        message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                    }`}>
+                    <div className={`p-4 rounded-lg flex items-center space-x-2 ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        }`}>
                         {message.type === 'success' ? <FaCheck /> : <FaTimes />}
                         <span>{message.text}</span>
                     </div>
@@ -154,11 +153,10 @@ const ContentManager = () => {
                                     <button
                                         key={page.id}
                                         onClick={() => setSelectedPage(page.id)}
-                                        className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center space-x-3 ${
-                                            selectedPage === page.id
+                                        className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center space-x-3 ${selectedPage === page.id
                                                 ? 'bg-sl-maroon text-white'
                                                 : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
-                                        }`}
+                                            }`}
                                     >
                                         <span className="text-xl">{page.icon}</span>
                                         <span className="font-medium">{page.name}</span>
@@ -203,9 +201,9 @@ const ContentManager = () => {
                                                     <label className="block text-sm font-medium text-gray-600 capitalize">
                                                         {field.replace(/([A-Z])/g, ' $1').replace(/(\d+)/g, ' $1')}
                                                     </label>
-                                                    {field.toLowerCase().includes('description') || 
-                                                     field.toLowerCase().includes('message') ||
-                                                     field.toLowerCase().includes('desc') ? (
+                                                    {field.toLowerCase().includes('description') ||
+                                                        field.toLowerCase().includes('message') ||
+                                                        field.toLowerCase().includes('desc') ? (
                                                         <textarea
                                                             rows={4}
                                                             value={editedContent[sectionId]?.[field] || ''}

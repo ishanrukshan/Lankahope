@@ -104,6 +104,13 @@ const ImageManager = () => {
             setImages(data);
         } catch (error) {
             console.error('Error fetching images:', error);
+            if (error.response && error.response.status === 401) {
+                // Token invalid or expired
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('userInfo');
+                window.location.href = '/admin/login';
+                return;
+            }
             setMessage({ type: 'error', text: 'Failed to load images' });
         } finally {
             setLoading(false);
