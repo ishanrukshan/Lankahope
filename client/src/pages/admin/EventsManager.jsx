@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { FaPlus, FaTrash, FaSpinner, FaCalendarAlt, FaNewspaper, FaImage } from 'react-icons/fa';
 
 const EventsManager = () => {
@@ -213,14 +215,23 @@ const EventsManager = () => {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Full Content / Article</label>
-                        <textarea
-                            name="content"
-                            placeholder="Enter full article content (optional)"
-                            value={formData.content}
-                            onChange={handleInputChange}
-                            rows={6}
-                            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all font-mono text-sm"
-                        ></textarea>
+                        <div className="bg-white rounded-lg overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-purple-500 focus-within:border-purple-500 transition-all">
+                            <ReactQuill
+                                theme="snow"
+                                value={formData.content}
+                                onChange={(value) => setFormData({ ...formData, content: value })}
+                                modules={{
+                                    toolbar: [
+                                        [{ 'header': [1, 2, 3, false] }],
+                                        ['bold', 'italic', 'underline', 'strike'],
+                                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                        ['link', 'blockquote'],
+                                        ['clean']
+                                    ]
+                                }}
+                                className="h-64 mb-12" // mb-12 needed because Quill toolbar takes space
+                            />
+                        </div>
                     </div>
                     <button
                         type="submit"

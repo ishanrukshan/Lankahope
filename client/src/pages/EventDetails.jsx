@@ -111,9 +111,10 @@ const EventDetails = () => {
 
                             {/* Main Content */}
                             {event.content ? (
-                                <div className="whitespace-pre-wrap">
-                                    {event.content}
-                                </div>
+                                <div
+                                    className="prose prose-lg max-w-none text-gray-700 leading-relaxed ql-editor"
+                                    dangerouslySetInnerHTML={{ __html: event.content }}
+                                />
                             ) : (
                                 <p className="italic text-gray-400">No additional details provided.</p>
                             )}
