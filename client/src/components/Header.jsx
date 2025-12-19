@@ -114,7 +114,7 @@ const Header = () => {
                         <div className={`text-lg lg:text-xl xl:text-2xl font-serif font-bold flex items-center ${isScrolled ? 'text-sl-maroon' : 'text-white'}`}>
                             {/* Icon/Logo */}
                             <span className="mr-1 lg:mr-2 text-xl lg:text-2xl xl:text-3xl">🏛️</span>
-                            <span>LankaHope</span>
+                            <span>UNHRO</span>
                         </div>
                     </Link>
 
@@ -173,7 +173,7 @@ const Header = () => {
                 <Link to="/" className="flex items-center space-x-2 shrink-0">
                     <div className="text-lg lg:text-xl xl:text-2xl font-serif font-bold flex items-center text-sl-maroon">
                         <span className="mr-1 lg:mr-2 text-xl lg:text-2xl xl:text-3xl">🏛️</span>
-                        <span>LankaHope</span>
+                        <span>UNHRO</span>
                     </div>
                 </Link>
 

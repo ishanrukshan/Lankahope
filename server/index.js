@@ -15,6 +15,7 @@ import contactRoutes from './routes/contactRoutes.js';
 import contentRoutes from './routes/contentRoutes.js';
 import imageRoutes from './routes/imageRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
+import boardRoutes from './routes/boardRoutes.js';
 
 dotenv.config();
 
@@ -65,6 +66,7 @@ app.use('/api/content', contentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/images', imageRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/board', boardRoutes);
 
 // Static uploads - support both old and new upload paths
 const __filename = fileURLToPath(import.meta.url);

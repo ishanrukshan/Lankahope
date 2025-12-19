@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
-import { FaHome, FaUsers, FaCalendarAlt, FaBullhorn, FaEdit, FaImage, FaImages, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaUsers, FaCalendarAlt, FaBullhorn, FaEdit, FaImage, FaImages, FaCog, FaSignOutAlt, FaUserTie } from 'react-icons/fa';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -29,6 +29,7 @@ const AdminDashboard = () => {
         { path: '/admin/dashboard/team', label: 'Manage Team', icon: <FaUsers /> },
         { path: '/admin/dashboard/events', label: 'News & Events', icon: <FaCalendarAlt /> },
         { path: '/admin/dashboard/announcements', label: 'Announcements', icon: <FaBullhorn /> },
+        { path: '/admin/dashboard/board', label: 'Board Members', icon: <FaUserTie /> },
         { path: '/admin/dashboard/settings', label: 'Site Settings', icon: <FaCog />, isNew: true }
     ];
 
@@ -133,6 +134,12 @@ const AdminDashboard = () => {
                                 <FaBullhorn className="text-3xl text-orange-500 mb-4" />
                                 <h3 className="font-bold text-gray-800 group-hover:text-sl-maroon">Announcements</h3>
                                 <p className="text-sm text-gray-600 mt-2">Update footer announcements and links.</p>
+                            </Link>
+
+                            <Link to="/admin/dashboard/board" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-teal-500 hover:shadow-md transition-all group">
+                                <FaUserTie className="text-3xl text-teal-500 mb-4" />
+                                <h3 className="font-bold text-gray-800 group-hover:text-sl-maroon">Board Members</h3>
+                                <p className="text-sm text-gray-600 mt-2">Manage board and committee members with photos.</p>
                             </Link>
 
                             <Link to="/admin/dashboard/settings" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-gray-500 hover:shadow-md transition-all group">
