@@ -29,9 +29,8 @@ const corsOptions = {
     origin: [
         'http://localhost:5173',  // Local development
         'http://localhost:3000',  // Alternative local port
-        'https://unhro.vercel.app',  // Replace with YOUR Vercel frontend URL
-        // Add your custom domain here when you set it up:
-        // 'https://yourdomain.com'
+        'https://lankahope.vercel.app',  // Your Vercel backend URL
+        'https://lankahope-o2qk.vercel.app',  // Your Vercel frontend URL
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
