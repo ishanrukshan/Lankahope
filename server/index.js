@@ -27,10 +27,10 @@ const PORT = process.env.PORT || 5000;
 // CORS Configuration - Allow frontend to access backend
 const corsOptions = {
     origin: [
-        'http://localhost:5173',  // Local development
-        'http://localhost:3000',  // Alternative local port
+        // 'http://localhost:5173',  // Local development
+        // 'http://localhost:3000',  // Alternative local port
         'https://lankahope.vercel.app',  // Your Vercel backend URL
-        'https://unhrofrontend.vercel.app', // Your Vercel frontend URL
+        'https://unhrosrilanka.com', // Your Vercel frontend URL
 
     ],
     credentials: true,
