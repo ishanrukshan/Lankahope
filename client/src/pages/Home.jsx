@@ -132,8 +132,8 @@ const Home = () => {
                             </div>
 
                             <div className="mt-10 border-t border-gray-100 pt-8">
-                                <h4 className="font-serif text-xl text-gray-900 font-bold">{get('chairman', 'name', 'Hon. Chairman Name')}</h4>
-                                <p className="text-un-blue text-sm tracking-widest uppercase mt-1">{get('chairman', 'title', 'Chairman, UNHRO')}</p>
+                                <h4 className="font-serif text-xl text-gray-900 font-bold">Ruwan Asuramuni</h4>
+                                <p className="text-un-blue text-sm tracking-widest uppercase mt-1">Chairman, UNHRO</p>
                             </div>
                         </div>
                     </div>
