@@ -1,8 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import axios from 'axios'
 import './index.css'
 import App from './App.jsx'
 import { CMSProvider } from './context/ContentContext.jsx'
+
+// Configure axios base URL for all requests
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || '';
 
 // AOS Animation Library
 import AOS from 'aos'
