@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FaCalendarAlt, FaNewspaper, FaArrowRight } from 'react-icons/fa';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const EventCard = ({ event }) => {
     const isEvent = event.type === 'EVENT';
 
@@ -13,9 +15,9 @@ const EventCard = ({ event }) => {
     const monthShort = dateObj.toLocaleDateString('en-US', { month: 'short' });
     const dayNumeric = dateObj.toLocaleDateString('en-US', { day: '2-digit' });
 
-    // Handle image path correctly
+    // Handle image path correctly - add API_URL for relative paths
     const imageSrc = event.flyerImagePath
-        ? (event.flyerImagePath.startsWith('http') ? event.flyerImagePath : event.flyerImagePath)
+        ? (event.flyerImagePath.startsWith('http') ? event.flyerImagePath : `${API_URL}${event.flyerImagePath}`)
         : null;
 
     return (

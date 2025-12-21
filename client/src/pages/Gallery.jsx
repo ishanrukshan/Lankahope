@@ -3,6 +3,8 @@ import axios from 'axios';
 import PageTitle from '../components/PageTitle';
 import { FaImages, FaSearchPlus } from 'react-icons/fa';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const Gallery = () => {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -63,7 +65,7 @@ const Gallery = () => {
                                 onClick={() => openLightbox(item)}
                             >
                                 <img
-                                    src={item.imagePath}
+                                    src={item.imagePath?.startsWith('http') ? item.imagePath : `${API_URL}${item.imagePath}`}
                                     alt={item.title}
                                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                                 />
@@ -96,7 +98,7 @@ const Gallery = () => {
                         onClick={e => e.stopPropagation()}
                     >
                         <img
-                            src={selectedImage.imagePath}
+                            src={selectedImage.imagePath?.startsWith('http') ? selectedImage.imagePath : `${API_URL}${selectedImage.imagePath}`}
                             alt={selectedImage.title}
                             className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
                         />
