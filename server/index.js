@@ -24,7 +24,21 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// CORS Configuration - Allow frontend to access backend
+const corsOptions = {
+    origin: [
+        'http://localhost:5173',  // Local development
+        'http://localhost:3000',  // Alternative local port
+        'https://unhro.vercel.app',  // Replace with YOUR Vercel frontend URL
+        // Add your custom domain here when you set it up:
+        // 'https://yourdomain.com'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
