@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaCaretDown, FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaLinkedinIn } from 'react-icons/fa';
+import logo from '../assets/logo-blue.png';
 
 // WhatsApp donation link helper
 const getWhatsAppDonateLink = () => {
     const phoneNumber = '94774411719'; // Sri Lankan number in international format
-    const message = "Hello! I'm interested in supporting LankaHope. Could you please provide me with information on how I can make a donation? Thank you!";
+    const message = "Hello! I'm interested in supporting UNHRO. Could you please provide me with information on how I can make a donation? Thank you!";
     const encodedMessage = encodeURIComponent(message);
     return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 };
@@ -48,7 +49,7 @@ const Header = () => {
     const NavLinks = ({ mobile = false }) => (
         <>
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
+                <Link to="/" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-colors duration-300 ease-in-out ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-un-blue' : 'text-gray-700 hover:text-un-blue'}`}>
                     HOME
                 </Link>
             </li>
@@ -61,50 +62,50 @@ const Header = () => {
             >
                 <button
                     onClick={mobile ? toggleMobileAbout : undefined}
-                    className={`flex items-center w-full ${mobile ? 'justify-start text-left' : 'justify-center lg:w-auto'} py-2 px-3 rounded-lg ${mobile ? '' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon focus:outline-none ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}
+                    className={`flex items-center w-full ${mobile ? 'justify-start text-left' : 'justify-center lg:w-auto'} py-2 px-3 rounded-lg ${mobile ? '' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-colors duration-300 ease-in-out focus:outline-none ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-un-blue' : 'text-gray-700 hover:text-un-blue'}`}
                 >
-                    ABOUT US <FaCaretDown className={`ml-1 transform transition-transform duration-300 ${(mobile ? isMobileAboutOpen : isAboutOpen) ? 'rotate-180' : ''} ${isHomePage && !isScrolled && !mobile ? 'text-sl-gold' : 'text-gray-400 group-hover:text-sl-maroon'}`} />
+                    ABOUT US <FaCaretDown className={`ml-1 transform transition-transform duration-300 ${(mobile ? isMobileAboutOpen : isAboutOpen) ? 'rotate-180' : ''} ${isHomePage && !isScrolled && !mobile ? 'text-un-blue' : 'text-gray-400 group-hover:text-sl-maroon'}`} />
                 </button>
 
                 {/* Dropdown Menu */}
-                <div className={`${mobile ? (isMobileAboutOpen ? 'block' : 'hidden') : 'hidden group-hover:block'} ${mobile ? 'static w-full bg-gray-50 pl-4' : 'absolute top-full left-1/2 transform -translate-x-1/2 w-56 bg-gray-800/95 backdrop-blur-sm shadow-xl rounded-b-lg border-t-2 border-sl-gold'} transition-all duration-300 z-50`}>
-                    <Link to="/about/background" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Background</Link>
-                    <Link to="/about/administration" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Administration</Link>
-                    <Link to="/about/team" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Our Team</Link>
-                    <Link to="/about/board" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-sl-gold rounded-b-lg'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Board / Committee</Link>
+                <div className={`${mobile ? (isMobileAboutOpen ? 'block' : 'hidden') : 'hidden group-hover:block'} ${mobile ? 'static w-full bg-gray-50 pl-4' : 'absolute top-full left-1/2 transform -translate-x-1/2 w-56 bg-gray-800/95 backdrop-blur-sm shadow-xl rounded-b-lg border-t-2 border-un-blue'} transition-all duration-300 z-50`}>
+                    <Link to="/about/background" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-un-blue'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>About UNHRO</Link>
+                    <Link to="/about/leadership" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-un-blue'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Leadership</Link>
+                    <Link to="/about/team" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-un-blue'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Our Team</Link>
+                    <Link to="/about/impact" className={`block px-5 py-3 text-sm ${mobile ? 'text-gray-600 hover:bg-gray-100 hover:text-sl-maroon border-l-4 border-transparent hover:border-sl-maroon hover:pl-6' : 'text-gray-200 hover:bg-gray-700 hover:text-un-blue rounded-b-lg'} transition-all duration-300 ease-in-out transform hover:translate-x-1`}>Our Impact</Link>
                 </div>
             </li>
 
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/resources" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
+                <Link to="/resources" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-colors duration-300 ease-in-out ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-un-blue' : 'text-gray-700 hover:text-un-blue'}`}>
                     RESOURCES
                 </Link>
             </li>
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/symposium" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
+                <Link to="/symposium" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-colors duration-300 ease-in-out ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-un-blue' : 'text-gray-700 hover:text-un-blue'}`}>
                     SYMPOSIUM
                 </Link>
             </li>
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/news-events" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
+                <Link to="/news-events" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-colors duration-300 ease-in-out ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-un-blue' : 'text-gray-700 hover:text-un-blue'}`}>
                     NEWS & EVENTS
                 </Link>
             </li>
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/gallery" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
+                <Link to="/gallery" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-colors duration-300 ease-in-out ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-un-blue' : 'text-gray-700 hover:text-un-blue'}`}>
                     GALLERY
                 </Link>
             </li>
             <li className={`w-full ${mobile ? '' : 'lg:w-auto text-center'}`}>
-                <Link to="/contact" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 border-b-2 border-transparent hover:border-sl-maroon ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-sl-gold hover:border-sl-gold hover:bg-white/10 hover:shadow-lg' : 'text-gray-700 hover:text-sl-maroon hover:bg-sl-maroon/5 hover:shadow-md'}`}>
+                <Link to="/contact" className={`block py-2 px-3 rounded-lg ${mobile ? 'text-left' : 'lg:py-3 lg:px-1.5 xl:px-3'} text-xs xl:text-sm font-bold transition-colors duration-300 ease-in-out ${isHomePage && !isScrolled && !mobile ? 'text-white hover:text-un-blue' : 'text-gray-700 hover:text-un-blue'}`}>
                     CONTACT US
                 </Link>
             </li>
         </>
     );
 
-    // --- HOME PAGE HEADER (Transparent / Sticky) --- from "LankaHope" style
-    // --- HOME PAGE HEADER (Transparent / Sticky) --- from "LankaHope" style
+    // --- HOME PAGE HEADER (Transparent / Sticky) --- from "UNHRO" style
+    // --- HOME PAGE HEADER (Transparent / Sticky) --- from "UNHRO" style
     if (isHomePage) {
         return (
             <header className={`fixed top-0 w-full z-50 transition-all duration-300 group/header animate-slide-down delay-500 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-3'}`}>
@@ -112,8 +113,7 @@ const Header = () => {
                     {/* Logo */}
                     <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
                         <div className={`text-lg lg:text-xl xl:text-2xl font-serif font-bold flex items-center ${isScrolled ? 'text-sl-maroon' : 'text-white'}`}>
-                            {/* Icon/Logo */}
-                            <span className="mr-1 lg:mr-2 text-xl lg:text-2xl xl:text-3xl">🏛️</span>
+                            <img src={logo} alt="UNHRO Logo" className="h-10 lg:h-12 mr-2" />
                             <span>UNHRO</span>
                         </div>
                     </Link>
@@ -128,7 +128,7 @@ const Header = () => {
                                     href={getWhatsAppDonateLink()}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-block text-center font-serif font-bold py-1.5 lg:py-2 px-3 lg:px-4 xl:px-6 text-xs xl:text-sm rounded transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-2xl border-2 bg-[#D4AF37] border-[#D4AF37] text-white hover:bg-yellow-600 hover:border-yellow-600 hover:shadow-yellow-500/50 active:scale-95"
+                                    className="inline-block text-center font-serif font-bold py-1.5 lg:py-2 px-3 lg:px-4 xl:px-6 text-xs xl:text-sm rounded transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-2xl border-2 bg-un-blue border-un-blue text-white hover:bg-blue-700 hover:border-blue-700 hover:shadow-blue-500/50 active:scale-95"
                                 >
                                     Donate
                                 </a>
@@ -154,7 +154,7 @@ const Header = () => {
                                 href={getWhatsAppDonateLink()}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="block w-full text-center bg-[#D4AF37] border-2 border-[#D4AF37] text-white font-serif font-bold py-3 px-6 rounded hover:bg-yellow-600 hover:border-yellow-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/50 active:scale-95 mt-4"
+                                className="block w-full text-center bg-un-blue border-2 border-un-blue text-white font-serif font-bold py-3 px-6 rounded hover:bg-blue-700 hover:border-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/50 active:scale-95 mt-4"
                             >
                                 Donate
                             </a>
@@ -172,7 +172,7 @@ const Header = () => {
                 {/* Logo - Same as Home */}
                 <Link to="/" className="flex items-center space-x-2 shrink-0">
                     <div className="text-lg lg:text-xl xl:text-2xl font-serif font-bold flex items-center text-sl-maroon">
-                        <span className="mr-1 lg:mr-2 text-xl lg:text-2xl xl:text-3xl">🏛️</span>
+                        <img src={logo} alt="UNHRO Logo" className="h-10 lg:h-12 mr-2" />
                         <span>UNHRO</span>
                     </div>
                 </Link>
@@ -187,7 +187,7 @@ const Header = () => {
                                 href={getWhatsAppDonateLink()}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-block text-center font-serif font-bold py-1.5 lg:py-2 px-3 lg:px-4 xl:px-6 text-xs xl:text-sm rounded transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-2xl border-2 bg-[#D4AF37] border-[#D4AF37] text-white hover:bg-yellow-600 hover:border-yellow-600 hover:shadow-yellow-500/50 active:scale-95"
+                                className="inline-block text-center font-serif font-bold py-1.5 lg:py-2 px-3 lg:px-4 xl:px-6 text-xs xl:text-sm rounded transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-2xl border-2 bg-un-blue border-un-blue text-white hover:bg-blue-700 hover:border-blue-700 hover:shadow-blue-500/50 active:scale-95"
                             >
                                 Donate
                             </a>
@@ -213,7 +213,7 @@ const Header = () => {
                             href={getWhatsAppDonateLink()}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="block w-full text-center bg-[#D4AF37] border-2 border-[#D4AF37] text-white font-serif font-bold py-3 px-6 rounded hover:bg-yellow-600 hover:border-yellow-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/50 active:scale-95 mt-4"
+                            className="block w-full text-center bg-un-blue border-2 border-un-blue text-white font-serif font-bold py-3 px-6 rounded hover:bg-blue-700 hover:border-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/50 active:scale-95 mt-4"
                         >
                             Donate
                         </a>

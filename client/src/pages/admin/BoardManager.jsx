@@ -225,7 +225,7 @@ const BoardManager = () => {
                                 />
                             </label>
                             {preview && (
-                                <img src={preview} alt="Preview" className="w-16 h-16 object-cover rounded-full border-2 border-sl-gold" />
+                                <img src={preview} alt="Preview" className="w-16 h-16 object-cover rounded-full border-2 border-un-blue" />
                             )}
                         </div>
                     </div>
@@ -272,7 +272,7 @@ const BoardManager = () => {
                                         <img
                                             src={`${API_URL}${member.imagePath}`}
                                             alt={member.name}
-                                            className="w-16 h-16 object-cover rounded-full border-2 border-sl-gold/30"
+                                            className="w-16 h-16 object-cover rounded-full border-2 border-un-blue/30"
                                         />
                                     ) : (
                                         <div className="w-16 h-16 rounded-full bg-gradient-to-br from-sl-maroon to-sl-maroon/80 flex items-center justify-center flex-shrink-0">
@@ -281,7 +281,7 @@ const BoardManager = () => {
                                     )}
                                     <div className="flex-1 min-w-0">
                                         <h4 className="font-medium text-gray-800 truncate">{member.name}</h4>
-                                        <p className="text-sm text-sl-gold">{member.role}</p>
+                                        <p className="text-sm text-un-blue">{member.role}</p>
                                         {member.organization && (
                                             <p className="text-xs text-gray-500 truncate">{member.organization}</p>
                                         )}

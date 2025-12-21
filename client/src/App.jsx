@@ -6,6 +6,8 @@ import AboutBackground from './pages/AboutBackground';
 import AboutAdministration from './pages/AboutAdministration';
 import AboutResearch from './pages/AboutResearch';
 import AboutBoard from './pages/AboutBoard';
+import Leadership from './pages/Leadership';
+import OurImpact from './pages/OurImpact';
 import OurTeam from './pages/OurTeam';
 import Resources from './pages/Resources';
 import Symposium from './pages/Symposium';
@@ -45,10 +47,13 @@ function App() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about/background" element={<AboutBackground />} />
-          <Route path="/about/administration" element={<AboutAdministration />} />
-          <Route path="/about/research-institutions" element={<AboutResearch />} />
+          <Route path="/about/leadership" element={<Leadership />} />
+          <Route path="/about/impact" element={<OurImpact />} />
           <Route path="/about/team" element={<OurTeam />} />
-          <Route path="/about/board" element={<AboutBoard />} />
+          {/* Legacy routes for backward compatibility */}
+          <Route path="/about/administration" element={<Leadership />} />
+          <Route path="/about/board" element={<Leadership />} />
+          <Route path="/about/research-institutions" element={<AboutResearch />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/symposium" element={<Symposium />} />
           <Route path="/symposium" element={<Symposium />} />

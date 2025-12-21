@@ -29,7 +29,7 @@ const AboutBoard = () => {
         <div className="bg-white min-h-screen">
             <PageTitle
                 title="Board / Committee"
-                subtitle="Governance and oversight of LankaHope"
+                subtitle="Governance and oversight of UNHRO"
                 breadcrumb={[
                     { label: 'About Us', path: null },
                     { label: 'Board / Committee' }
@@ -42,8 +42,8 @@ const AboutBoard = () => {
                         Governing Board
                     </h2>
                     <p data-aos="fade-up" data-aos-delay="100" className="text-gray-600 leading-relaxed text-lg">
-                        The Board of Directors provides strategic direction and oversight for LankaHope,
-                        ensuring that the organization fulfills its mandate to advance health research in Sri Lanka.
+                        The Board of Directors provides strategic direction and oversight for UNHRO,
+                        ensuring that the organization fulfills its mandate to protect and advance human rights in Sri Lanka.
                     </p>
                 </div>
             </section>
@@ -87,9 +87,9 @@ const AboutBoard = () => {
 
                                     <div className="p-8 text-center relative">
                                         {/* Decorative line */}
-                                        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-1 bg-sl-gold"></div>
+                                        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-1 bg-un-blue"></div>
 
-                                        <h3 className="font-serif text-2xl text-sl-maroon font-bold mb-2 group-hover:text-sl-gold transition-colors duration-300">
+                                        <h3 className="font-serif text-2xl text-sl-maroon font-bold mb-2 group-hover:text-un-blue transition-colors duration-300">
                                             {member.name}
                                         </h3>
                                         <div className="text-lg font-medium text-gray-800 mb-3 uppercase tracking-wide text-sm">

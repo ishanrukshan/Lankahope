@@ -438,7 +438,7 @@ const ImageManager = () => {
                                     <p className="font-medium text-gray-800 truncate text-sm">{image.name}</p>
                                     <p className="text-xs text-gray-500">{formatFileSize(image.size)}</p>
                                     {image.category && (
-                                        <span className="inline-block mt-1 px-2 py-0.5 bg-sl-gold/20 text-sl-maroon text-xs rounded-full capitalize">
+                                        <span className="inline-block mt-1 px-2 py-0.5 bg-un-blue/20 text-sl-maroon text-xs rounded-full capitalize">
                                             {image.category}
                                         </span>
                                     )}

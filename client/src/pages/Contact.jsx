@@ -47,17 +47,27 @@ const Contact = () => {
                             scrolling="no"
                             marginHeight="0"
                             marginWidth="0"
-                            src="https://maps.google.com/maps?q=Entebbe%20Uganda&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                            src="https://maps.google.com/maps?q=BMICH+Bauddhaloka+Mawatha+Colombo+7+Sri+Lanka&t=&z=15&ie=UTF8&iwloc=&output=embed"
                             className="absolute inset-0"
                         ></iframe>
                     </div>
 
                     <div className="bg-gray-50 p-6 rounded relative border-l-4 border-unhro-dark-blue">
-                        <h4 className="font-bold text-unhro-dark-blue mb-2">Uganda National Health Research Organisation</h4>
-                        <p className="text-gray-700 mb-1">Plot 123, Airport Road</p>
-                        <p className="text-gray-700 mb-1">P.O. Box 78, Entebbe - Uganda</p>
-                        <p className="text-gray-700 mb-1">Tel: +256 123 456 789</p>
-                        <p className="text-gray-700">Email: info@unhro.org.ug</p>
+                        <h4 className="font-bold text-unhro-dark-blue mb-3">UNHRO</h4>
+                        <p className="text-gray-700 mb-2 flex items-start">
+                            <span className="font-semibold mr-2">Address:</span>
+                            <span>No. 30, BMICH, Bauddhaloka Mawatha.,<br />Colombo 7, Sri Lanka</span>
+                        </p>
+                        <p className="text-gray-700 mb-2">
+                            <span className="font-semibold">Tel:</span> 0777911177, 0718429670, 0711659166
+                        </p>
+                        <p className="text-gray-700">
+                            <span className="font-semibold">Email:</span>
+                            <br />
+                            <span className="text-sm">UNHRO1010@gmail.com</span>
+                            <br />
+                            <span className="text-sm">unitednationshumanrightso@gmail.com</span>
+                        </p>
                     </div>
                 </div>
 

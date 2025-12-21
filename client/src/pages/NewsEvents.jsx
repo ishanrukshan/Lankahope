@@ -107,7 +107,7 @@ const NewsEvents = () => {
                 // Fallback data for demo handling if API fails (e.g. during dev/network issues)
                 const fallbackData = [
                     { _id: 1, title: 'Annual Health Symposium 2025', description: 'Join us for a groundbreaking discussion on the future of public health in Sri Lanka.', eventDate: '2025-11-20', type: 'EVENT' },
-                    { _id: 2, title: 'LankaHope Launches New Initiative', description: 'We are proud to announce our new community outreach program targeting rural areas.', eventDate: '2025-10-15', type: 'NEWS' },
+                    { _id: 2, title: 'UNHRO Launches New Initiative', description: 'We are proud to announce our new community outreach program targeting rural areas.', eventDate: '2025-10-15', type: 'NEWS' },
                     { _id: 3, title: 'Medical Research Abstract Call', description: 'Submit your research abstracts for the upcoming international journal publication.', eventDate: '2025-09-01', type: 'NEWS' },
                 ];
                 setEvents(fallbackData);

@@ -39,7 +39,7 @@ const AboutResearch = () => {
             shortName: "NIHS",
             description: "Focuses on health systems research, health policy analysis, and training of healthcare professionals.",
             icon: <FaUniversity size={32} className="text-white" />,
-            color: "from-sl-gold to-yellow-600",
+            color: "from-un-blue to-yellow-600",
             location: "Kalutara"
         },
         {
@@ -55,7 +55,7 @@ const AboutResearch = () => {
             shortName: "BMARI",
             description: "Research on traditional Ayurvedic medicine, herbal remedies, and integration of traditional healing practices with modern healthcare.",
             icon: <FaLeaf size={32} className="text-white" />,
-            color: "from-sl-gold to-yellow-600",
+            color: "from-un-blue to-yellow-600",
             location: "Nawinna"
         },
         {
@@ -71,7 +71,7 @@ const AboutResearch = () => {
             shortName: "Global",
             description: "Partnerships with WHO, international universities, and global health organizations for collaborative research initiatives.",
             icon: <FaGlobe size={32} className="text-white" />,
-            color: "from-sl-gold to-yellow-600",
+            color: "from-un-blue to-yellow-600",
             location: "Worldwide"
         }
     ];
@@ -102,7 +102,7 @@ const AboutResearch = () => {
                         {content.intro?.title || 'A Network of Excellence'}
                     </h2>
                     <p data-aos="fade-up" data-aos-delay="100" className="text-gray-600 leading-relaxed text-lg">
-                        {content.intro?.description || 'LankaHope coordinates with a network of premier research institutions across Sri Lanka. These institutions form the backbone of our national health research infrastructure, each contributing specialized expertise to address the country\'s health challenges.'}
+                        {content.intro?.description || 'UNHRO coordinates with a network of civil society organizations, legal institutions, and advocacy groups across Sri Lanka. These partners form the backbone of our national human rights infrastructure, each contributing specialized expertise to address justice and equality challenges.'}
                     </p>
                 </div>
             </section>
@@ -111,7 +111,7 @@ const AboutResearch = () => {
             <section className="py-20 px-4 md:px-12">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-16">
-                        <p data-aos="fade-up" className="text-sl-gold text-xs font-bold uppercase tracking-widest mb-3">Partner Institutions</p>
+                        <p data-aos="fade-up" className="text-un-blue text-xs font-bold uppercase tracking-widest mb-3">Partner Institutions</p>
                         <h2 data-aos="fade-up" data-aos-delay="100" className="text-4xl md:text-5xl font-serif text-sl-maroon">
                             Research Centers
                         </h2>
@@ -139,7 +139,7 @@ const AboutResearch = () => {
                                 <div className="p-6">
                                     <h3 className="text-lg font-serif text-sl-maroon mb-2">{inst.name}</h3>
                                     <p className="text-gray-500 text-sm mb-4 flex items-center">
-                                        <span className="w-2 h-2 rounded-full bg-sl-gold mr-2"></span>
+                                        <span className="w-2 h-2 rounded-full bg-un-blue mr-2"></span>
                                         {inst.location}
                                     </p>
                                     <p className="text-gray-600 text-sm leading-relaxed">{inst.description}</p>
@@ -157,12 +157,12 @@ const AboutResearch = () => {
                         {content.collaboration?.title || 'Collaborate With Us'}
                     </h2>
                     <p data-aos="fade-up" data-aos-delay="100" className="text-gray-300 leading-relaxed mb-8">
-                        {content.collaboration?.description || 'We welcome partnerships with academic institutions, healthcare organizations, and international bodies. Together, we can advance health research and improve health outcomes for Sri Lanka.'}
+                        {content.collaboration?.description || 'We welcome partnerships with academic institutions, legal organizations, and international human rights bodies. Together, we can advance justice, protect civil liberties, and improve human rights outcomes for Sri Lanka.'}
                     </p>
                     <button
                         data-aos="fade-up"
                         data-aos-delay="200"
-                        className="px-8 py-3 bg-sl-gold text-white hover:bg-yellow-600 transition-all duration-300 uppercase text-sm tracking-widest font-bold rounded"
+                        className="px-8 py-3 bg-un-blue text-white hover:bg-yellow-600 transition-all duration-300 uppercase text-sm tracking-widest font-bold rounded"
                     >
                         Contact Us
                     </button>

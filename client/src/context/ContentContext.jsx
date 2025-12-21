@@ -91,7 +91,7 @@ export const ContentProvider = ({ children }) => {
  */
 export const SettingsProvider = ({ children }) => {
     const [settings, setSettings] = useState({
-        siteName: 'LankaHope',
+        siteName: 'UNHRO',
         siteTagline: 'Empowering Health Research',
         contactEmail: 'info@lankahope.lk',
         contactPhone: '+94 11 269 3456',
@@ -99,8 +99,8 @@ export const SettingsProvider = ({ children }) => {
         facebookUrl: '',
         twitterUrl: '',
         linkedinUrl: '',
-        footerText: 'LankaHope is dedicated to promoting health research.',
-        copyrightText: 'LankaHope. All Rights Reserved.',
+        footerText: 'UNHRO is dedicated to promoting health research.',
+        copyrightText: 'UNHRO. All Rights Reserved.',
         primaryColor: '#722F37',
         secondaryColor: '#D4AF37'
     });

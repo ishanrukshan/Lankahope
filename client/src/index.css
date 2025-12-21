@@ -1,10 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+Sinhala:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+Sinhala:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+@config "../tailwind.config.js";
 
 /* Prevent horizontal overflow on mobile */
 html,
 body {
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 @layer utilities {

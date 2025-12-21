@@ -42,7 +42,7 @@ const AdminDashboard = () => {
             {/* Sidebar */}
             <aside className="w-full md:w-64 bg-gray-900 text-white flex-shrink-0 md:min-h-screen">
                 <div className="p-6 border-b border-gray-700">
-                    <h2 className="text-xl font-bold text-sl-gold">🏛️ LankaHope</h2>
+                    <h2 className="text-xl font-bold text-un-blue">🏛️ UNHRO</h2>
                     <p className="text-xs text-gray-400 mt-1">Admin Panel</p>
                 </div>
                 <div className="p-4 border-b border-gray-700">
@@ -60,10 +60,10 @@ const AdminDashboard = () => {
                                         : 'text-gray-300 hover:bg-gray-800'
                                         }`}
                                 >
-                                    <span className={isActive(item.path) ? 'text-sl-gold' : ''}>{item.icon}</span>
+                                    <span className={isActive(item.path) ? 'text-un-blue' : ''}>{item.icon}</span>
                                     <span>{item.label}</span>
                                     {item.isNew && (
-                                        <span className="ml-auto text-[10px] px-1.5 py-0.5 bg-sl-gold text-gray-900 rounded font-bold">NEW</span>
+                                        <span className="ml-auto text-[10px] px-1.5 py-0.5 bg-un-blue text-gray-900 rounded font-bold">NEW</span>
                                     )}
                                 </Link>
                             </li>
@@ -87,7 +87,7 @@ const AdminDashboard = () => {
                     <div className="space-y-6">
                         <div className="bg-white p-8 rounded-lg shadow-sm">
                             <h1 className="text-3xl font-bold text-gray-800 mb-2">Dashboard Overview</h1>
-                            <p className="text-gray-600">Welcome to the LankaHope Admin Panel. Manage your website content from here.</p>
+                            <p className="text-gray-600">Welcome to the UNHRO Admin Panel. Manage your website content from here.</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -109,9 +109,9 @@ const AdminDashboard = () => {
                                 <p className="text-sm text-gray-600 mt-2">Manage image galleries for various sections.</p>
                             </Link>
 
-                            <Link to="/admin/dashboard/images" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-sl-gold hover:shadow-md transition-all group">
+                            <Link to="/admin/dashboard/images" className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-un-blue hover:shadow-md transition-all group">
                                 <div className="flex items-center justify-between mb-4">
-                                    <FaImage className="text-3xl text-sl-gold" />
+                                    <FaImage className="text-3xl text-un-blue" />
                                     <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">New</span>
                                 </div>
                                 <h3 className="font-bold text-gray-800 group-hover:text-sl-maroon">Image Manager</h3>

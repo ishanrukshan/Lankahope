@@ -3,37 +3,26 @@ import { Link } from 'react-router-dom';
 
 const PageTitle = ({ title, subtitle, breadcrumb = [] }) => {
     return (
-        <div className="relative w-full h-48 md:h-64 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
-            {/* Decorative Pattern Overlay */}
-            <div className="absolute inset-0 opacity-10">
-                <div className="absolute inset-0" style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                }}></div>
-            </div>
-
-            {/* Gold Accent Line */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-sl-gold to-transparent"></div>
-
-            {/* Content */}
-            <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+        <div className="w-full bg-gray-50 border-b border-gray-200 py-16 md:py-20">
+            <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Breadcrumb */}
                 {breadcrumb.length > 0 && (
-                    <nav className="mb-4">
-                        <ol className="flex items-center space-x-2 text-sm">
+                    <nav className="mb-6" data-aos="fade-down" data-aos-duration="800">
+                        <ol className="flex items-center space-x-3 text-xs md:text-sm font-bold tracking-widest uppercase">
                             <li>
-                                <Link to="/" className="text-gray-400 hover:text-sl-gold transition-colors">
+                                <Link to="/" className="text-gray-400 hover:text-un-blue transition-colors">
                                     Home
                                 </Link>
                             </li>
                             {breadcrumb.map((item, index) => (
-                                <li key={index} className="flex items-center space-x-2">
-                                    <span className="text-gray-600">/</span>
+                                <li key={index} className="flex items-center space-x-3">
+                                    <span className="text-gray-300">/</span>
                                     {item.path ? (
-                                        <Link to={item.path} className="text-gray-400 hover:text-sl-gold transition-colors">
+                                        <Link to={item.path} className="text-gray-400 hover:text-un-blue transition-colors">
                                             {item.label}
                                         </Link>
                                     ) : (
-                                        <span className="text-sl-gold">{item.label}</span>
+                                        <span className="text-un-blue">{item.label}</span>
                                     )}
                                 </li>
                             ))}
@@ -41,17 +30,31 @@ const PageTitle = ({ title, subtitle, breadcrumb = [] }) => {
                     </nav>
                 )}
 
-                {/* Title */}
-                <h1 className="text-3xl md:text-5xl font-serif text-white font-medium tracking-wide">
-                    {title}
-                </h1>
+                <div className="max-w-4xl">
+                    {/* Title */}
+                    <h1
+                        className="text-4xl md:text-6xl font-serif text-sl-maroon font-bold mb-6 leading-tight"
+                        data-aos="fade-up"
+                        data-aos-duration="800"
+                        data-aos-delay="100"
+                    >
+                        {title}
+                    </h1>
 
-                {/* Subtitle */}
-                {subtitle && (
-                    <p className="mt-3 text-gray-400 text-sm md:text-base max-w-2xl">
-                        {subtitle}
-                    </p>
-                )}
+                    {/* Subtitle */}
+                    {subtitle && (
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-1 bg-un-blue flex-shrink-0" data-aos="fade-right" data-aos-delay="300"></div>
+                            <p
+                                className="text-gray-500 text-lg md:text-xl font-light leading-relaxed"
+                                data-aos="fade-up"
+                                data-aos-delay="200"
+                            >
+                                {subtitle}
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

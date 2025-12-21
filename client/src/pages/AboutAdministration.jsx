@@ -28,23 +28,23 @@ const AboutAdministration = () => {
     const departments = [
         {
             title: content.hierarchy?.dept1Title || "Office of the Director General",
-            description: content.hierarchy?.dept1Description || "Provides strategic leadership and oversees all operations of LankaHope, ensuring alignment with national health research priorities.",
-            icon: <FaUserTie size={28} className="text-sl-gold" />
+            description: content.hierarchy?.dept1Description || "Provides strategic leadership and oversees all operations of UNHRO, ensuring alignment with national human rights priorities and international standards.",
+            icon: <FaUserTie size={28} className="text-un-blue" />
         },
         {
             title: content.hierarchy?.dept2Title || "Research Coordination Division",
             description: content.hierarchy?.dept2Description || "Coordinates research activities across institutions, manages research grants, and ensures quality standards in all research projects.",
-            icon: <FaCogs size={28} className="text-sl-gold" />
+            icon: <FaCogs size={28} className="text-un-blue" />
         },
         {
             title: content.hierarchy?.dept3Title || "Ethics & Compliance Unit",
             description: content.hierarchy?.dept3Description || "Oversees ethical review processes, ensures research compliance with national and international standards, and protects research participants.",
-            icon: <FaBuilding size={28} className="text-sl-gold" />
+            icon: <FaBuilding size={28} className="text-un-blue" />
         },
         {
             title: content.hierarchy?.dept4Title || "Capacity Building & Training",
-            description: content.hierarchy?.dept4Description || "Develops and implements training programs for health researchers, fostering the next generation of research leaders in Sri Lanka.",
-            icon: <FaUsers size={28} className="text-sl-gold" />
+            description: content.hierarchy?.dept4Description || "Develops and implements training programs for human rights advocates, fostering the next generation of justice leaders in Sri Lanka.",
+            icon: <FaUsers size={28} className="text-un-blue" />
         }
     ];
 
@@ -78,12 +78,12 @@ const AboutAdministration = () => {
             <section className="py-20 px-4 md:px-12 bg-[#FAFAFA]">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-16">
-                        <p data-aos="fade-up" className="text-sl-gold text-xs font-bold uppercase tracking-widest mb-3">Structure</p>
+                        <p data-aos="fade-up" className="text-un-blue text-xs font-bold uppercase tracking-widest mb-3">Structure</p>
                         <h2 data-aos="fade-up" data-aos-delay="100" className="text-4xl md:text-5xl font-serif text-sl-maroon">
                             {content.intro?.title || 'Organizational Framework'}
                         </h2>
                         <p data-aos="fade-up" data-aos-delay="200" className="mt-4 text-gray-600 max-w-2xl mx-auto">
-                            {content.intro?.description || 'LankaHope operates under a structured framework designed to ensure efficient coordination of health research activities across Sri Lanka.'}
+                            {content.intro?.description || 'UNHRO operates under a structured framework designed to ensure efficient coordination of human rights activities and advocacy programs across Sri Lanka.'}
                         </p>
                     </div>
 
@@ -110,7 +110,7 @@ const AboutAdministration = () => {
             <section className="py-20 px-4 md:px-12">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-16">
-                        <p data-aos="fade-up" className="text-sl-gold text-xs font-bold uppercase tracking-widest mb-3">Leadership</p>
+                        <p data-aos="fade-up" className="text-un-blue text-xs font-bold uppercase tracking-widest mb-3">Leadership</p>
                         <h2 data-aos="fade-up" data-aos-delay="100" className="text-4xl md:text-5xl font-serif text-sl-maroon">
                             Executive Team
                         </h2>
@@ -122,7 +122,7 @@ const AboutAdministration = () => {
                                 key={index}
                                 data-aos="fade-up"
                                 data-aos-delay={index * 100}
-                                className="text-center p-6 bg-gradient-to-br from-gray-50 to-white rounded-lg border border-gray-100 hover:border-sl-gold transition-all duration-300"
+                                className="text-center p-6 bg-gradient-to-br from-gray-50 to-white rounded-lg border border-gray-100 hover:border-un-blue transition-all duration-300"
                             >
                                 <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-sl-maroon to-sl-maroon/80 flex items-center justify-center">
                                     <FaUserTie size={32} className="text-white" />
@@ -139,14 +139,14 @@ const AboutAdministration = () => {
             {/* Governance */}
             <section className="py-20 px-4 md:px-12 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
                 <div className="max-w-4xl mx-auto text-center">
-                    <p data-aos="fade-up" className="text-sl-gold text-xs font-bold uppercase tracking-widest mb-3">Governance</p>
+                    <p data-aos="fade-up" className="text-un-blue text-xs font-bold uppercase tracking-widest mb-3">Governance</p>
                     <h2 data-aos="fade-up" data-aos-delay="100" className="text-3xl md:text-4xl font-serif mb-6">
                         Board of Directors
                     </h2>
                     <p data-aos="fade-up" data-aos-delay="200" className="text-gray-300 leading-relaxed mb-8">
-                        {content.governance?.description || 'LankaHope is governed by a Board of Directors comprising distinguished professionals from the health sector, academia, and public administration. The Board provides strategic oversight and ensures that the organization fulfills its mandate effectively.'}
+                        {content.governance?.description || 'UNHRO is governed by a Board of Directors comprising distinguished professionals from the health sector, academia, and public administration. The Board provides strategic oversight and ensures that the organization fulfills its mandate effectively.'}
                     </p>
-                    <div data-aos="fade-up" data-aos-delay="300" className="inline-flex items-center space-x-2 text-sl-gold">
+                    <div data-aos="fade-up" data-aos-delay="300" className="inline-flex items-center space-x-2 text-un-blue">
                         <span className="text-sm uppercase tracking-widest">Board composition details coming soon</span>
                     </div>
                 </div>

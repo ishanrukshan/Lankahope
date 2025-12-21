@@ -95,7 +95,7 @@ const EventDetails = () => {
                                 {event.title}
                             </h1>
                             <div className="flex items-center text-gray-500 font-medium">
-                                <FaCalendarAlt className="mr-2 text-sl-gold" />
+                                <FaCalendarAlt className="mr-2 text-un-blue" />
                                 {dateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                             </div>
                         </div>
