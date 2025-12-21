@@ -30,7 +30,8 @@ const corsOptions = {
         'http://localhost:5173',  // Local development
         'http://localhost:3000',  // Alternative local port
         'https://lankahope.vercel.app',  // Your Vercel backend URL
-        'https://lankahope-o2qk.vercel.app',  // Your Vercel frontend URL
+        'https://unhrofrontend.vercel.app', // Your Vercel frontend URL
+
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
