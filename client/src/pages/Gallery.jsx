@@ -12,9 +12,17 @@ const Gallery = () => {
         const fetchItems = async () => {
             try {
                 const { data } = await axios.get('/api/gallery');
-                setItems(data);
+                // Ensure data is an array (handle bulk upload response format)
+                if (Array.isArray(data)) {
+                    setItems(data);
+                } else if (data && Array.isArray(data.items)) {
+                    setItems(data.items);
+                } else {
+                    setItems([]);
+                }
             } catch (error) {
                 console.error("Error fetching gallery:", error);
+                setItems([]);
             } finally {
                 setLoading(false);
             }
