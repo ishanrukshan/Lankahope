@@ -5,7 +5,7 @@ import logo from '../assets/logo-blue.png';
 
 // WhatsApp donation link helper
 const getWhatsAppDonateLink = () => {
-    const phoneNumber = '94774411719'; // Sri Lankan number in international format
+    const phoneNumber = '94777911177'; // Sri Lankan number in international format
     const message = "Hello! I'm interested in supporting UNHRO. Could you please provide me with information on how I can make a donation? Thank you!";
     const encodedMessage = encodeURIComponent(message);
     return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
