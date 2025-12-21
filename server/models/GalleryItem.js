@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const gallerySchema = new mongoose.Schema({
-    title: { type: String, required: true },
+    title: { type: String, default: 'Untitled' },
     category: { type: String, default: 'General' },
     imagePath: { type: String, required: true },
 }, {

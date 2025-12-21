@@ -27,30 +27,24 @@ const AboutBackground = () => {
 
     const pillars = [
         {
-            title: content.vision?.title || "Vision",
-            text: content.vision?.description || "To be Sri Lanka's leading voice for human rights, ensuring dignity, equality, and justice for every citizen.",
+            title: "Vision",
+            text: "To be Sri Lanka's leading voice for human rights, ensuring dignity, equality, and justice for every citizen.",
             icon: <FaEye size={40} className="text-un-blue" />,
-            color: "border-un-blue"
         },
         {
-            title: content.mission?.title || "Mission",
-            text: content.mission?.description || "To protect, promote, and advocate for fundamental human rights through education, legal support, and community engagement across Sri Lanka.",
+            title: "Mission",
+            text: "To protect, promote, and advocate for fundamental human rights through education, legal support, and community engagement across Sri Lanka.",
             icon: <FaBullseye size={40} className="text-un-blue" />,
-            color: "border-un-blue"
         },
         {
-            title: content.values?.title || "Core Values",
-            text: content.values?.value1 && content.values?.value2
-                ? `${content.values.value1}, ${content.values.value2}${content.values.value3 ? ', ' + content.values.value3 : ''}${content.values.value4 ? ', ' + content.values.value4 : ''}${content.values.value5 ? ', ' + content.values.value5 : ''}`
-                : "Justice & Equality, Integrity & Ethics, Collaboration & Partnership, Inclusivity, Transparency & Accountability.",
+            title: "Core Values",
+            text: "Justice & Equality, Integrity & Ethics, Collaboration & Partnership, Inclusivity, Transparency & Accountability.",
             icon: <FaHandshake size={40} className="text-un-blue" />,
-            color: "border-un-blue"
         },
         {
-            title: content.mandate?.title || "Mandate",
-            text: content.mandate?.description || "To monitor human rights conditions, provide legal assistance, advocate for policy reforms, and empower communities to understand and exercise their rights.",
+            title: "Mandate",
+            text: "To monitor human rights conditions, provide legal assistance, advocate for policy reforms, and empower communities to understand and exercise their rights.",
             icon: <FaBalanceScale size={40} className="text-un-blue" />,
-            color: "border-un-blue"
         }
     ];
 

@@ -144,50 +144,50 @@ const Home = () => {
             <section className="py-24 bg-[#FAF9F6] border-t border-gray-100 px-4 md:px-12">
                 <div className="container mx-auto">
                     <div className="text-center mb-16">
-                        <p data-aos="fade-up" className="text-un-blue text-xs font-bold uppercase tracking-widest mb-3">{get('pillars', 'sectionTitle', 'Our Foundation')}</p>
-                        <h2 data-aos="fade-up" data-aos-delay="100" className="text-4xl md:text-5xl font-serif text-sl-maroon font-bold">{get('pillars', 'heading', 'The Pillars of Our Purpose')}</h2>
+                        <p data-aos="fade-up" className="text-un-blue text-xs font-bold uppercase tracking-widest mb-3">Our Foundation</p>
+                        <h2 data-aos="fade-up" data-aos-delay="100" className="text-4xl md:text-5xl font-serif text-sl-maroon font-bold">The Pillars of Our Purpose</h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {/* Vision */}
                         <div data-aos="fade-up" data-aos-delay="0" className="bg-white p-8 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 border-t-4 border-un-blue group">
                             <div className="mb-6 text-un-blue text-4xl group-hover:scale-110 transition-transform duration-300"><FaEye /></div>
-                            <h3 className="font-serif text-2xl text-sl-maroon mb-4">{get('vision', 'title', 'Vision')}</h3>
+                            <h3 className="font-serif text-2xl text-sl-maroon mb-4">Vision</h3>
                             <p className="text-gray-500 text-sm leading-relaxed">
-                                {get('vision', 'description', 'A world where every individual enjoys their fundamental human rights, living with dignity, freedom, and equality.')}
+                                A world where every individual enjoys their fundamental human rights, living with dignity, freedom, and equality.
                             </p>
                         </div>
 
                         {/* Mission */}
                         <div data-aos="fade-up" data-aos-delay="100" className="bg-white p-8 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 border-t-4 border-un-blue group">
                             <div className="mb-6 text-un-blue text-4xl group-hover:scale-110 transition-transform duration-300"><FaBullseye /></div>
-                            <h3 className="font-serif text-2xl text-sl-maroon mb-4">{get('mission', 'title', 'Mission')}</h3>
+                            <h3 className="font-serif text-2xl text-sl-maroon mb-4">Mission</h3>
                             <p className="text-gray-500 text-sm leading-relaxed">
-                                {get('mission', 'description', 'To protect and promote human rights through advocacy, education, legal support, and community empowerment across Sri Lanka.')}
+                                To protect and promote human rights through advocacy, education, legal support, and community empowerment across Sri Lanka.
                             </p>
                         </div>
 
                         {/* Values */}
                         <div data-aos="fade-up" data-aos-delay="200" className="bg-white p-8 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 border-t-4 border-un-blue group">
                             <div className="mb-6 text-un-blue text-4xl group-hover:scale-110 transition-transform duration-300"><FaBalanceScale /></div>
-                            <h3 className="font-serif text-2xl text-sl-maroon mb-4">{get('values', 'title', 'Values')}</h3>
+                            <h3 className="font-serif text-2xl text-sl-maroon mb-4">Values</h3>
                             <ul className="text-gray-500 text-sm leading-loose">
-                                <li className="border-b border-gray-100 pb-1 mb-1">{get('values', 'value1', 'Justice & Equality')}</li>
-                                <li className="border-b border-gray-100 pb-1 mb-1">{get('values', 'value2', 'Dignity & Respect')}</li>
-                                <li className="border-b border-gray-100 pb-1 mb-1">{get('values', 'value3', 'Transparency')}</li>
-                                <li>{get('values', 'value4', 'Accountability')}</li>
+                                <li className="border-b border-gray-100 pb-1 mb-1">Justice & Equality</li>
+                                <li className="border-b border-gray-100 pb-1 mb-1">Dignity & Respect</li>
+                                <li className="border-b border-gray-100 pb-1 mb-1">Transparency</li>
+                                <li>Accountability</li>
                             </ul>
                         </div>
 
                         {/* Goals */}
                         <div data-aos="fade-up" data-aos-delay="300" className="bg-white p-8 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 border-t-4 border-un-blue group">
                             <div className="mb-6 text-un-blue text-4xl group-hover:scale-110 transition-transform duration-300"><FaFlag /></div>
-                            <h3 className="font-serif text-2xl text-sl-maroon mb-4">{get('goals', 'title', 'Goals')}</h3>
+                            <h3 className="font-serif text-2xl text-sl-maroon mb-4">Goals</h3>
                             <ul className="text-gray-500 text-sm leading-loose">
-                                <li className="border-b border-gray-100 pb-1 mb-1">{get('goals', 'goal1', 'Protect Rights in All Districts')}</li>
-                                <li className="border-b border-gray-100 pb-1 mb-1">{get('goals', 'goal2', 'Educate 1M+ Citizens')}</li>
-                                <li className="border-b border-gray-100 pb-1 mb-1">{get('goals', 'goal3', 'Strengthen Legal Support')}</li>
-                                <li>{get('goals', 'goal4', 'International Advocacy')}</li>
+                                <li className="border-b border-gray-100 pb-1 mb-1">Protect Rights in All Districts</li>
+                                <li className="border-b border-gray-100 pb-1 mb-1">Educate 1M+ Citizens</li>
+                                <li className="border-b border-gray-100 pb-1 mb-1">Strengthen Legal Support</li>
+                                <li>International Advocacy</li>
                             </ul>
                         </div>
                     </div>

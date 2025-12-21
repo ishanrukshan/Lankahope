@@ -111,11 +111,11 @@ const Header = () => {
             <header className={`fixed top-0 w-full z-50 transition-all duration-300 group/header animate-slide-down delay-500 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-3'}`}>
                 <div className="container mx-auto px-4 lg:px-6 xl:px-12 flex justify-between items-center">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
-                        <div className={`text-lg lg:text-xl xl:text-2xl font-serif font-bold flex items-center ${isScrolled ? 'text-sl-maroon' : 'text-white'}`}>
-                            <img src={logo} alt="UNHRO Logo" className="h-10 lg:h-12 mr-2" />
-                            <span>UNHRO</span>
-                        </div>
+                    <Link to="/" className="flex items-center gap-3 flex-shrink-0">
+                        <img src={logo} alt="UNHRO Logo" className="h-10 lg:h-12 object-contain" />
+                        <span className={`text-xl lg:text-2xl font-serif font-bold tracking-wide ${isScrolled ? 'text-sl-maroon' : 'text-white'}`}>
+                            UNHRO
+                        </span>
                     </Link>
 
                     {/* Desktop Menu */}
@@ -170,11 +170,11 @@ const Header = () => {
         <header className="sticky top-0 w-full z-50 bg-white shadow-md py-2">
             <div className="container mx-auto px-4 lg:px-6 xl:px-12 flex justify-between items-center">
                 {/* Logo - Same as Home */}
-                <Link to="/" className="flex items-center space-x-2 shrink-0">
-                    <div className="text-lg lg:text-xl xl:text-2xl font-serif font-bold flex items-center text-sl-maroon">
-                        <img src={logo} alt="UNHRO Logo" className="h-10 lg:h-12 mr-2" />
-                        <span>UNHRO</span>
-                    </div>
+                <Link to="/" className="flex items-center gap-3 shrink-0">
+                    <img src={logo} alt="UNHRO Logo" className="h-10 lg:h-12 object-contain" />
+                    <span className="text-xl lg:text-2xl font-serif font-bold tracking-wide text-sl-maroon">
+                        UNHRO
+                    </span>
                 </Link>
 
                 {/* Desktop Menu - Same as Home */}

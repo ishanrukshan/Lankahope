@@ -49,6 +49,33 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
     }
 });
 
+// @desc    Bulk upload gallery items (multiple images at once)
+// @route   POST /api/gallery/bulk
+// @access  Private/Admin
+router.post('/bulk', protect, admin, upload.array('images', 20), async (req, res) => {
+    try {
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ message: 'Please upload at least one image' });
+        }
+
+        const items = req.files.map(file => ({
+            title: file.originalname.replace(/\.[^/.]+$/, ''), // Use filename as title
+            category: req.body.category || 'General',
+            imagePath: `/uploads/${file.filename}`
+        }));
+
+        const createdItems = await GalleryItem.insertMany(items);
+        res.status(201).json({
+            message: `${createdItems.length} images uploaded successfully`,
+            count: createdItems.length,
+            items: createdItems
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: 'Bulk upload failed' });
+    }
+});
+
 // @desc    Delete a gallery item
 // @route   DELETE /api/gallery/:id
 // @access  Private/Admin
