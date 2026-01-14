@@ -1,14 +1,25 @@
 import express from 'express';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
 import GalleryItem from '../models/GalleryItem.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
-import upload from '../middleware/uploadMiddleware.js';
+import upload, { cloudinary } from '../middleware/uploadMiddleware.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const router = express.Router();
+
+// Helper function to extract Cloudinary public_id from URL
+const getCloudinaryPublicId = (url) => {
+    if (!url || !url.includes('cloudinary.com')) return null;
+    try {
+        const parts = url.split('/');
+        const uploadIndex = parts.indexOf('upload');
+        if (uploadIndex === -1) return null;
+        const pathParts = parts.slice(uploadIndex + 2);
+        const publicId = pathParts.join('/').replace(/\.[^/.]+$/, '');
+        return publicId;
+    } catch (e) {
+        console.error('Error extracting Cloudinary public_id:', e);
+        return null;
+    }
+};
 
 // @desc    Get all gallery items
 // @route   GET /api/gallery
@@ -18,6 +29,7 @@ router.get('/', async (req, res) => {
         const items = await GalleryItem.find({}).sort({ createdAt: -1 });
         res.json(items);
     } catch (error) {
+        console.error('Error fetching gallery:', error.message || error);
         res.status(500).json({ message: 'Server Error' });
     }
 });
@@ -33,7 +45,8 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
             return res.status(400).json({ message: 'Please upload an image' });
         }
 
-        const imagePath = `/uploads/${req.file.filename}`;
+        const imagePath = req.file.path || req.file.secure_url || '';
+        console.log('Gallery image uploaded:', imagePath);
 
         const item = new GalleryItem({
             title: title || 'Untitled',
@@ -44,8 +57,8 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
         const createdItem = await item.save();
         res.status(201).json(createdItem);
     } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: 'Invalid data' });
+        console.error('Error creating gallery item:', error.message || JSON.stringify(error));
+        res.status(400).json({ message: error.message || 'Invalid data' });
     }
 });
 
@@ -58,10 +71,12 @@ router.post('/bulk', protect, admin, upload.array('images', 20), async (req, res
             return res.status(400).json({ message: 'Please upload at least one image' });
         }
 
+        console.log('Bulk upload received:', req.files.length, 'files');
+
         const items = req.files.map(file => ({
-            title: file.originalname.replace(/\.[^/.]+$/, ''), // Use filename as title
+            title: file.originalname ? file.originalname.replace(/\.[^/.]+$/, '') : 'Untitled',
             category: req.body.category || 'General',
-            imagePath: `/uploads/${file.filename}`
+            imagePath: file.path || file.secure_url || ''
         }));
 
         const createdItems = await GalleryItem.insertMany(items);
@@ -71,8 +86,8 @@ router.post('/bulk', protect, admin, upload.array('images', 20), async (req, res
             items: createdItems
         });
     } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: 'Bulk upload failed' });
+        console.error('Error in bulk upload:', error.message || JSON.stringify(error));
+        res.status(400).json({ message: error.message || 'Bulk upload failed' });
     }
 });
 
@@ -84,15 +99,15 @@ router.delete('/:id', protect, admin, async (req, res) => {
         const item = await GalleryItem.findById(req.params.id);
 
         if (item) {
-            // Delete file from filesystem
-            const filePath = path.join(__dirname, '..', item.imagePath);
-            try {
-                if (fs.existsSync(filePath)) {
-                    fs.unlinkSync(filePath);
+            // Delete image from Cloudinary
+            const publicId = getCloudinaryPublicId(item.imagePath);
+            if (publicId) {
+                try {
+                    await cloudinary.uploader.destroy(publicId);
+                    console.log('Deleted gallery image from Cloudinary:', publicId);
+                } catch (err) {
+                    console.error('Error deleting Cloudinary image:', err.message);
                 }
-            } catch (err) {
-                console.error('Error deleting file:', err);
-                // Continue with database deletion even if file is missing
             }
 
             await item.deleteOne();
@@ -101,6 +116,7 @@ router.delete('/:id', protect, admin, async (req, res) => {
             res.status(404).json({ message: 'Item not found' });
         }
     } catch (error) {
+        console.error('Error deleting gallery item:', error.message || JSON.stringify(error));
         res.status(500).json({ message: 'Server Error' });
     }
 });

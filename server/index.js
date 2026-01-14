@@ -34,14 +34,14 @@ const getAllowedOrigins = () => {
         'https://lankahope.vercel.app',  // Vercel deployment
         'https://unhrosrilanka.com',     // Production domain
     ];
-    
+
     // Add custom domain from environment if set
     if (process.env.DOMAIN) {
         origins.push(`https://${process.env.DOMAIN}`);
         origins.push(`https://www.${process.env.DOMAIN}`);
         origins.push(`http://${process.env.DOMAIN}`);
     }
-    
+
     return origins;
 };
 
@@ -50,7 +50,7 @@ const corsOptions = {
         // Allow requests with no origin (like mobile apps or Postman)
         // Also allow same-origin requests in Docker (nginx proxy)
         if (!origin) return callback(null, true);
-        
+
         const allowedOrigins = getAllowedOrigins();
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
@@ -123,6 +123,20 @@ app.get('/', (req, res) => {
     res.send('API is running...');
 });
 
+// Global error handler - catches Multer/Cloudinary errors
+app.use((err, req, res, next) => {
+    console.error('Global Error Handler:', err.message || err);
+    if (err.name === 'MulterError') {
+        return res.status(400).json({ message: `Upload error: ${err.message}` });
+    }
+    if (err.http_code) {
+        // Cloudinary error
+        return res.status(err.http_code).json({ message: `Cloudinary error: ${err.message}` });
+    }
+    res.status(500).json({ message: err.message || 'Internal Server Error' });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+

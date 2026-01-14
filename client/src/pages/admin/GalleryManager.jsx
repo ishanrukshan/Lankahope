@@ -60,7 +60,8 @@ const GalleryManager = () => {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`
-                }
+                },
+                timeout: 120000, // 2 minute timeout for Cloudinary uploads
             });
             setMessage({ type: 'success', text: `${data.count} images uploaded successfully!` });
             setImages([]);
@@ -74,7 +75,8 @@ const GalleryManager = () => {
                 window.location.href = '/admin/login';
                 return;
             }
-            setMessage({ type: 'error', text: 'Failed to upload images' });
+            const errorMsg = error.response?.data?.message || error.message || 'Failed to upload images';
+            setMessage({ type: 'error', text: errorMsg });
         } finally {
             setSubmitting(false);
         }

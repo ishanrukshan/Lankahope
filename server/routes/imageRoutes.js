@@ -1,50 +1,9 @@
 import express from 'express';
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
 import SiteImage from '../models/SiteImage.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
+import upload, { cloudinary } from '../middleware/uploadMiddleware.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const router = express.Router();
-
-// Configure storage
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const uploadDir = path.join(__dirname, '..', 'uploads', 'images');
-        // Create directory if it doesn't exist
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-        // Generate unique filename
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname);
-        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-    }
-});
-
-// File filter
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|webp|svg/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-
-    if (extname && mimetype) {
-        return cb(null, true);
-    }
-    cb(new Error('Only image files are allowed!'));
-};
-
-const upload = multer({
-    storage,
-    fileFilter,
-    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
-});
 
 // @desc    Get all images
 // @route   GET /api/images
@@ -113,25 +72,26 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
         if (name) {
             const existing = await SiteImage.findOne({ name });
             if (existing) {
-                // Delete uploaded file
-                fs.unlinkSync(req.file.path);
                 return res.status(400).json({ message: 'Image with this name already exists' });
             }
         }
 
+        // Cloudinary returns full URL in req.file.path
+        const cloudinaryUrl = req.file.path;
+
         const image = new SiteImage({
-            name: name || req.file.filename.split('.')[0],
+            name: name || req.file.filename || `image-${Date.now()}`,
             originalName: req.file.originalname,
-            filename: req.file.filename,
-            path: `/uploads/images/${req.file.filename}`,
-            url: `/uploads/images/${req.file.filename}`,
+            filename: req.file.filename || req.file.public_id,
+            path: cloudinaryUrl,
+            url: cloudinaryUrl,
             pageId: pageId || null,
             sectionId: sectionId || null,
             altText: altText || '',
             description: description || '',
             category: category || 'other',
-            size: req.file.size,
-            mimeType: req.file.mimetype,
+            size: req.file.size || 0,
+            mimeType: req.file.mimetype || 'image/jpeg',
             uploadedBy: req.user._id
         });
 
@@ -139,10 +99,6 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
         res.status(201).json(image);
     } catch (error) {
         console.error('Error uploading image:', error);
-        // Clean up uploaded file on error
-        if (req.file && fs.existsSync(req.file.path)) {
-            fs.unlinkSync(req.file.path);
-        }
         res.status(500).json({ message: 'Server error uploading image' });
     }
 });
@@ -161,15 +117,15 @@ router.post('/bulk', protect, admin, upload.array('images', 10), async (req, res
 
         for (const file of req.files) {
             const image = new SiteImage({
-                name: file.filename.split('.')[0],
+                name: file.filename || `image-${Date.now()}`,
                 originalName: file.originalname,
-                filename: file.filename,
-                path: `/uploads/images/${file.filename}`,
-                url: `/uploads/images/${file.filename}`,
+                filename: file.filename || file.public_id,
+                path: file.path, // Cloudinary URL
+                url: file.path,
                 pageId: pageId || null,
                 category: category || 'other',
-                size: file.size,
-                mimeType: file.mimetype,
+                size: file.size || 0,
+                mimeType: file.mimetype || 'image/jpeg',
                 uploadedBy: req.user._id
             });
 
@@ -192,7 +148,6 @@ router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
         const image = await SiteImage.findById(req.params.id);
 
         if (!image) {
-            if (req.file) fs.unlinkSync(req.file.path);
             return res.status(404).json({ message: 'Image not found' });
         }
 
@@ -206,24 +161,23 @@ router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
 
         // Replace file if new one uploaded
         if (req.file) {
-            // Delete old file
-            const oldPath = path.join(__dirname, '..', image.path);
-            try {
-                if (fs.existsSync(oldPath)) {
-                    fs.unlinkSync(oldPath);
+            // Delete old image from Cloudinary
+            if (image.url && image.url.includes('cloudinary')) {
+                try {
+                    const publicId = image.url.split('/').slice(-2).join('/').split('.')[0];
+                    await cloudinary.uploader.destroy(publicId);
+                } catch (err) {
+                    console.error('Error deleting old Cloudinary image:', err);
                 }
-            } catch (err) {
-                console.error('Error deleting old file:', err);
-                // Continue with update
             }
 
-            // Update with new file info
+            // Update with new Cloudinary URL
             image.originalName = req.file.originalname;
-            image.filename = req.file.filename;
-            image.path = `/uploads/images/${req.file.filename}`;
-            image.url = `/uploads/images/${req.file.filename}`;
-            image.size = req.file.size;
-            image.mimeType = req.file.mimetype;
+            image.filename = req.file.filename || req.file.public_id;
+            image.path = req.file.path;
+            image.url = req.file.path;
+            image.size = req.file.size || 0;
+            image.mimeType = req.file.mimetype || 'image/jpeg';
         }
 
         image.uploadedBy = req.user._id;
@@ -232,9 +186,6 @@ router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
         res.json(image);
     } catch (error) {
         console.error('Error updating image:', error);
-        if (req.file && fs.existsSync(req.file.path)) {
-            fs.unlinkSync(req.file.path);
-        }
         res.status(500).json({ message: 'Server error updating image' });
     }
 });
@@ -250,15 +201,14 @@ router.delete('/:id', protect, admin, async (req, res) => {
             return res.status(404).json({ message: 'Image not found' });
         }
 
-        // Delete file from filesystem
-        const filePath = path.join(__dirname, '..', image.path);
-        try {
-            if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
+        // Delete from Cloudinary
+        if (image.url && image.url.includes('cloudinary')) {
+            try {
+                const publicId = image.url.split('/').slice(-2).join('/').split('.')[0];
+                await cloudinary.uploader.destroy(publicId);
+            } catch (err) {
+                console.error('Error deleting Cloudinary image:', err);
             }
-        } catch (err) {
-            console.error('Error deleting file:', err);
-            // Continue with database deletion even if file is missing
         }
 
         await image.deleteOne();
