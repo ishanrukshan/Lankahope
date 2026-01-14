@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import { FaPlus, FaTrash, FaSpinner, FaCalendarAlt, FaNewspaper, FaImage } from 'react-icons/fa';
+import { FaPlus, FaTrash, FaSpinner, FaCalendarAlt, FaNewspaper, FaImage, FaEdit, FaTimes } from 'react-icons/fa';
 
 const EventsManager = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
+    const [editingId, setEditingId] = useState(null); // Track which item is being edited
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -18,8 +19,6 @@ const EventsManager = () => {
         flyerImage: null
     });
     const [previewUrl, setPreviewUrl] = useState(null);
-
-
 
     useEffect(() => {
         fetchEvents();
@@ -58,6 +57,35 @@ const EventsManager = () => {
         }
     };
 
+    const handleEdit = (event) => {
+        // Populate form with existing data
+        setEditingId(event._id);
+        setFormData({
+            title: event.title || '',
+            description: event.description || '',
+            content: event.content || '',
+            eventDate: event.eventDate ? event.eventDate.split('T')[0] : '',
+            type: event.type || 'NEWS',
+            flyerImage: null
+        });
+        // Set preview to existing image
+        if (event.flyerImagePath) {
+            setPreviewUrl(event.flyerImagePath);
+        } else {
+            setPreviewUrl(null);
+        }
+        // Scroll to form
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleCancelEdit = () => {
+        setEditingId(null);
+        setFormData({ title: '', description: '', content: '', eventDate: '', type: 'NEWS', flyerImage: null });
+        setPreviewUrl(null);
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput) fileInput.value = "";
+    };
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -86,16 +114,32 @@ const EventsManager = () => {
 
         try {
             const token = localStorage.getItem('adminToken');
-            await axios.post('/api/events', data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setMessage({ type: 'success', text: 'Item created successfully!' });
+
+            if (editingId) {
+                // Update existing event
+                await axios.put(`/api/events/${editingId}`, data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setMessage({ type: 'success', text: 'Item updated successfully!' });
+                setEditingId(null);
+            } else {
+                // Create new event
+                await axios.post('/api/events', data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setMessage({ type: 'success', text: 'Item created successfully!' });
+            }
+
             setFormData({ title: '', description: '', content: '', eventDate: '', type: 'NEWS', flyerImage: null });
             setPreviewUrl(null);
-            document.getElementById('fileInput').value = "";
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput) fileInput.value = "";
             fetchEvents();
             setTimeout(() => setMessage({ type: '', text: '' }), 3000);
         } catch (error) {
@@ -104,7 +148,7 @@ const EventsManager = () => {
                 window.location.href = '/admin/login';
                 return;
             }
-            setMessage({ type: 'error', text: 'Failed to create. Please try again.' });
+            setMessage({ type: 'error', text: `Failed to ${editingId ? 'update' : 'create'}. Please try again.` });
         } finally {
             setSubmitting(false);
         }
@@ -143,12 +187,33 @@ const EventsManager = () => {
                 </div>
             )}
 
-            {/* Add Form */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h3 className="text-lg font-bold mb-6 text-gray-800 flex items-center gap-2">
-                    <FaPlus className="text-green-500" />
-                    Add New Item
-                </h3>
+            {/* Add/Edit Form */}
+            <div className={`bg-white p-6 rounded-xl shadow-sm border ${editingId ? 'border-yellow-400 ring-2 ring-yellow-200' : 'border-gray-200'}`}>
+                <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        {editingId ? (
+                            <>
+                                <FaEdit className="text-yellow-500" />
+                                Edit Item
+                            </>
+                        ) : (
+                            <>
+                                <FaPlus className="text-green-500" />
+                                Add New Item
+                            </>
+                        )}
+                    </h3>
+                    {editingId && (
+                        <button
+                            type="button"
+                            onClick={handleCancelEdit}
+                            className="text-gray-500 hover:text-gray-700 flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-gray-100 transition-all"
+                        >
+                            <FaTimes />
+                            Cancel Edit
+                        </button>
+                    )}
+                </div>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -187,7 +252,9 @@ const EventsManager = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Flyer / Image</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Flyer / Image {editingId && <span className="text-gray-400 font-normal">(leave empty to keep current)</span>}
+                            </label>
                             <div className="flex items-center gap-4">
                                 <input
                                     type="file"
@@ -229,24 +296,27 @@ const EventsManager = () => {
                                         ['clean']
                                     ]
                                 }}
-                                className="h-64 mb-12" // mb-12 needed because Quill toolbar takes space
+                                className="h-64 mb-12"
                             />
                         </div>
                     </div>
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="w-full md:w-auto bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold py-3 px-8 rounded-lg shadow hover:from-purple-600 hover:to-purple-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        className={`w-full md:w-auto font-bold py-3 px-8 rounded-lg shadow transition-all disabled:opacity-50 flex items-center justify-center gap-2 ${editingId
+                                ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-600 hover:to-yellow-700'
+                                : 'bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700'
+                            }`}
                     >
                         {submitting ? (
                             <>
                                 <FaSpinner className="animate-spin" />
-                                Creating...
+                                {editingId ? 'Updating...' : 'Creating...'}
                             </>
                         ) : (
                             <>
-                                <FaPlus />
-                                Create Item
+                                {editingId ? <FaEdit /> : <FaPlus />}
+                                {editingId ? 'Update Item' : 'Create Item'}
                             </>
                         )}
                     </button>
@@ -280,7 +350,7 @@ const EventsManager = () => {
                             </thead>
                             <tbody>
                                 {events.sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate)).map(event => (
-                                    <tr key={event._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <tr key={event._id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${editingId === event._id ? 'bg-yellow-50' : ''}`}>
                                         <td className="p-4">
                                             {event.flyerImagePath ? (
                                                 <img
@@ -316,13 +386,22 @@ const EventsManager = () => {
                                             )}
                                         </td>
                                         <td className="p-4">
-                                            <button
-                                                onClick={() => handleDelete(event._id)}
-                                                className="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-200 transition-all flex items-center gap-2"
-                                            >
-                                                <FaTrash className="text-xs" />
-                                                Delete
-                                            </button>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => handleEdit(event)}
+                                                    className="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-yellow-200 transition-all flex items-center gap-2"
+                                                >
+                                                    <FaEdit className="text-xs" />
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(event._id)}
+                                                    className="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-200 transition-all flex items-center gap-2"
+                                                >
+                                                    <FaTrash className="text-xs" />
+                                                    Delete
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}

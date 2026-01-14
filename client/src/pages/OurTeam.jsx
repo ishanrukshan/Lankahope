@@ -78,7 +78,7 @@ const OurTeam = () => {
                                     <div className="aspect-[4/3] bg-gray-200 relative overflow-hidden">
                                         {member.imagePath ? (
                                             <img
-                                                src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${member.imagePath}`}
+                                                src={`${import.meta.env.VITE_API_URL || ''}${member.imagePath}`}
                                                 alt={member.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                             />

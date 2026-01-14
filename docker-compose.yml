@@ -1,0 +1,64 @@
+services:
+  # Backend API Service
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: lankahope-backend
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+    volumes:
+      # Mount local uploads folder (preserves existing images)
+      - ./server/uploads:/app/uploads
+    networks:
+      - lankahope-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Service (React build served by Nginx)
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=
+    container_name: lankahope-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - lankahope-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: lankahope-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - frontend
+      - backend
+    volumes:
+      # Mount local uploads for serving static files
+      - ./server/uploads:/app/uploads:ro
+      # Uncomment below for SSL (after getting certificates)
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+    networks:
+      - lankahope-network
+
+# Custom network for container communication
+networks:
+  lankahope-network:
+    driver: bridge

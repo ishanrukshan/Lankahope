@@ -25,14 +25,45 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // CORS Configuration - Allow frontend to access backend
-const corsOptions = {
-    origin: [
-        // 'http://localhost:5173',  // Local development
-        // 'http://localhost:3000',  // Alternative local port
-        'https://lankahope.vercel.app',  // Your Vercel backend URL
-        'https://unhrosrilanka.com', // Your Vercel frontend URL
+// In Docker, frontend and backend are on same origin, so we can be more flexible
+const getAllowedOrigins = () => {
+    const origins = [
+        'http://localhost:5173',   // Local development
+        'http://localhost:3000',   // Alternative local port
+        'http://localhost',        // Docker local
+        'https://lankahope.vercel.app',  // Vercel deployment
+        'https://unhrosrilanka.com',     // Production domain
+    ];
+    
+    // Add custom domain from environment if set
+    if (process.env.DOMAIN) {
+        origins.push(`https://${process.env.DOMAIN}`);
+        origins.push(`https://www.${process.env.DOMAIN}`);
+        origins.push(`http://${process.env.DOMAIN}`);
+    }
+    
+    return origins;
+};
 
-    ],
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or Postman)
+        // Also allow same-origin requests in Docker (nginx proxy)
+        if (!origin) return callback(null, true);
+        
+        const allowedOrigins = getAllowedOrigins();
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            // In production with Docker, requests come through nginx on same origin
+            // So we can be more permissive
+            if (process.env.NODE_ENV === 'production') {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization']

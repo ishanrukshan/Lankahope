@@ -49,11 +49,12 @@ router.put('/:id', protect, admin, upload.single('flyerImage'), async (req, res)
         const event = await Event.findById(req.params.id);
 
         if (event) {
-            event.title = req.body.title || event.title;
-            event.description = req.body.description || event.description;
-            event.content = req.body.content || event.content;
-            event.eventDate = req.body.eventDate || event.eventDate;
-            event.type = req.body.type || event.type;
+            // Only update if value is provided and not empty string
+            if (req.body.title) event.title = req.body.title;
+            if (req.body.description !== undefined) event.description = req.body.description;
+            if (req.body.content !== undefined) event.content = req.body.content;
+            if (req.body.eventDate) event.eventDate = req.body.eventDate;
+            if (req.body.type) event.type = req.body.type;
             if (req.file) {
                 event.flyerImagePath = `/uploads/${req.file.filename}`;
             }
@@ -64,7 +65,8 @@ router.put('/:id', protect, admin, upload.single('flyerImage'), async (req, res)
             res.status(404).json({ message: 'Event not found' });
         }
     } catch (error) {
-        res.status(400).json({ message: 'Invalid data' });
+        console.error('Error updating event:', error);
+        res.status(400).json({ message: 'Invalid data', error: error.message });
     }
 });
 

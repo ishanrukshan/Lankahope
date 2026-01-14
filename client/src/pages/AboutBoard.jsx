@@ -3,7 +3,7 @@ import axios from 'axios';
 import AOS from 'aos';
 import PageTitle from '../components/PageTitle';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 const AboutBoard = () => {
     const [boardMembers, setBoardMembers] = useState([]);

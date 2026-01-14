@@ -5,7 +5,7 @@ import PageTitle from '../components/PageTitle';
 import { FaUserTie, FaUsers, FaBuilding, FaCogs, FaSpinner, FaArrowRight } from 'react-icons/fa';
 import API from '../config/api';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 const Leadership = () => {
     const [boardMembers, setBoardMembers] = useState([]);
